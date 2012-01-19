@@ -1,0 +1,437 @@
+html,
+body,
+#maindiv,
+#outer {
+  height: 100%;
+}
+body {
+  overflow: hidden;
+}
+body .loading {
+  color: #fff;
+  font-size: 10pt;
+  font-weight: 100;
+  height: 250px;
+  left: 50%;
+  list-style-type: none;
+  margin-left: -100px;
+  margin-top: -125px;
+  position: absolute;
+  top: 50%;
+  width: 200px;
+}
+body .loading li:nth-child(n+2) {
+  padding-left: 10px;
+}
+#maindiv #outer {
+  display: none;
+  width: 100%;
+}
+#maindiv #outer .roomView #top-panel .header {
+  box-shadow: inset 0px -1px rgba(255,255,255,0.10), 0px 1px 2px #000;
+}
+#maindiv #outer .roomView #top-panel .header .logo {
+  background-image: url("https://s3.amazonaws.com/static.turntable.fm/images/index/logo.png");
+  height: 59px;
+  top: 0;
+}
+#maindiv #outer .roomView #top-panel .header .room-buttons {
+  right: 45px;
+}
+#maindiv #outer .roomView #top-panel+div {
+  background: -webkit-radial-gradient(center, 50% 100%, rgba(0,0,0,0.00) 70%, rgba(0,0,0,0.80)) center top, -webkit-linear-gradient(top, rgba(0,0,0,0.30), rgba(0,0,0,0.90) 177px, #000 180px, rgba(0,0,0,0.90) 183px, rgba(0,0,0,0.60), #000), url("http://ttfm.info/images/bg.png") !important;
+  top: 60px !important;
+  z-index: 1;
+}
+#maindiv #outer .roomView #top-panel+div #meterGauge,
+#maindiv #outer .roomView #top-panel+div #meterNeedle,
+#maindiv #outer .roomView #top-panel+div > a:nth-child(2),
+#maindiv #outer .roomView #top-panel+div > a:nth-child(3) {
+  display: none;
+}
+#maindiv #outer .roomView #right-panel {
+  top: 60px;
+  width: 100%;
+}
+#maindiv #outer .roomView #right-panel .panel {
+  display: none;
+}
+#maindiv #outer .roomView #right-panel .panel.active {
+  display: block;
+}
+#maindiv #outer .roomView #right-panel .playlist-container {
+  right: 0;
+  top: 150px;
+  width: 300px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist {
+  background: #404040;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song {
+  background-color: #404040;
+  border: 0;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song .title {
+  color: #fff;
+  font-weight: 100;
+  width: 220px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song .details {
+  color: #fc0;
+  font-weight: 100;
+  top: 23px;
+  width: 220px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song .remove {
+  background: url("https://s3.amazonaws.com/static.turntable.fm/images/index/connect_x_sprite.png") 0px -13px no-repeat;
+  height: 13px;
+  margin-top: 12px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song .remove:hover {
+  background-position: 0px 0px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song:nth-child(even) {
+  background: rgba(0,0,0,0.10);
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane {
+  background: #404040;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .addSongsButton,
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .search {
+  left: 46px;
+}
+#maindiv #outer .roomView #right-panel .info-container {
+  background: #202020;
+  height: 150px;
+  position: absolute;
+  right: 0;
+  width: 300px;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong {
+  color: #fff;
+  font-size: 10pt;
+  line-height: 20px;
+  margin: 5px;
+}
+#maindiv #outer .roomView #right-panel .info-container .room {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00));
+  cursor: help;
+  height: 32px;
+  line-height: 32px;
+}
+#maindiv #outer .roomView #right-panel .info-container .room .favorite {
+  background: url("https://s3.amazonaws.com/static.turntable.fm/images/index/favorite_sprite.png") 0px -23px no-repeat;
+  cursor: pointer;
+  height: 23px;
+  left: 5px;
+  opacity: 0.3;
+  position: absolute;
+  width: 23px;
+  top: 4px;
+}
+#maindiv #outer .roomView #right-panel .info-container .room .favorite-on {
+  opacity: 1;
+}
+#maindiv #outer .roomView #right-panel .info-container .room .name {
+  color: #fff;
+  font-weight: 100;
+  margin-left: 30px;
+  text-shadow: 0px 1px #000;
+  width: 270px;
+}
+#maindiv #outer .roomView #right-panel .info-container .feedback,
+#maindiv #outer .roomView #right-panel .info-container .faqButton,
+#maindiv #outer .roomView #right-panel .info-container .url,
+#maindiv #outer .roomView #right-panel .info-container .share-on {
+  display: none;
+}
+#maindiv #outer .roomView #right-panel .chat-container {
+  bottom: 0;
+  height: 313px !important;
+  top: auto !important;
+  width: 600px;
+  z-index: 2;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatHeader {
+  bottom: 289px;
+  cursor: default;
+  position: absolute;
+}
+#maindiv #outer .roomView #right-panel .chat-container .messages {
+  bottom: 39px;
+  font-weight: 100;
+  height: 250px !important;
+  top: auto;
+}
+#maindiv #outer .roomView #right-panel .chat-container .messages .message {
+  width: 588px;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatBar {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.20), inset 0px -1px rgba(0,0,0,0.20);
+  border-top: 0;
+  height: 38px;
+  width: 100%;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatBar .guestListButton {
+  display: none;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatBar .input-box {
+  background: none;
+  border-left: 0;
+  left: 0;
+  width: 100%;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatBar .input-box input {
+  background: #202020;
+  border-radius: 18px;
+  box-shadow: 0px 1px rgba(255,255,255,0.10), inset 0px 1px rgba(0,0,0,0.10);
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  height: 18px;
+  left: 0;
+  line-height: 18px;
+  margin: 5px;
+  padding: 5px 10px;
+  top: 0;
+  width: 570px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container {
+  right: 0;
+  top: 150px !important;
+  width: 300px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests {
+  background: #404040;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOptions,
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOptionsNib {
+  background: #202020;
+  border-color: #000;
+  box-shadow: 0 1px 1px rgba(0,0,0,0.50);
+  color: #fff;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOption {
+  color: #fff;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOption:hover {
+  background-color: rgba(255,255,255,0.10);
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest {
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+  color: #fff;
+  font-weight: 100;
+  text-shadow: 0px 1px rgba(0,0,0,0.50);
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest:hover {
+  background: transparent;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest:nth-child(even) {
+  background: rgba(0,0,0,0.10);
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .chatBar {
+  display: none;
+}
+#maindiv #outer .roomView #right-panel .songlog-container {
+  right: 0;
+  top: 150px;
+  width: 300px;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content {
+  background: #404040;
+  bottom: 0;
+  height: 100%;
+  left: auto;
+  top: auto;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap {
+  background: #202020;
+  color: #fff;
+  display: none;
+  height: 120px;
+  padding: 0;
+  top: -120px;
+  position: absolute;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap .description {
+  padding-left: 5px;
+  width: 290px;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap .description a {
+  color: #fc0;
+  text-decoration: none;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap .description,
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap .edit-description {
+  height: 85px;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap .edit-description {
+  left: 0;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .infowrap .edit-description textarea {
+  background: #000;
+  border: 0;
+  box-shadow: 0px 1px rgba(255,255,255,0.10);
+  color: #fff;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  height: 100%;
+  padding: 5px;
+  width: 290px;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .panel {
+  position: absolute;
+  top: 0;
+  width: 300px;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .panel > .title {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)), url("https://s3.amazonaws.com/static.turntable.fm/images/room/music_icon.png") 6px 5px no-repeat, #202020;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+  color: #fff;
+  font-size: 12pt;
+  font-weight: 100;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 0 0 32px;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .panel .songlog {
+  background: #404040;
+  color: #fff;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .panel .songlog .song {
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .panel .songlog .song2 {
+  background: rgba(0,0,0,0.10);
+}
+#maindiv #outer .roomView #right-panel .songlog-container .content .panel .songlog .title {
+  font-weight: 100;
+}
+#maindiv #outer .roomView #right-panel .songlog-container .button {
+  display: none;
+}
+#maindiv #outer .roomView #right-panel .activity-log-container {
+  background-color: #404040;
+  position: absolute;
+  right: 0;
+  top: 150px;
+  width: 300px;
+}
+#maindiv #outer .roomView #right-panel .activity-log-container .title {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)), url("https://s3.amazonaws.com/static.turntable.fm/images/room/guest_list_icon_top.png") 6px 6px no-repeat, #202020;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+  color: #fff;
+  font-size: 12pt;
+  font-weight: 100;
+  height: 25px;
+  line-height: 25px;
+  padding: 0 0 0 32px;
+}
+#maindiv #outer .roomView #right-panel .activity-log-container ul {
+  list-style-type: none;
+}
+#maindiv #outer .roomView #right-panel .bottom-bar {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.20), inset 0px -1px rgba(0,0,0,0.20);
+  bottom: 0;
+  height: 38px;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+#maindiv #outer .roomView #right-panel .bottom-bar .panelButtons {
+  list-style-type: none;
+  position: absolute;
+  right: 3px;
+}
+#maindiv #outer .roomView #right-panel .bottom-bar .panelButtons li {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.40), rgba(255,255,255,0.00)) #808080;
+  border: 1px rgba(0,0,0,0.60) solid;
+  border-radius: 4px;
+  box-shadow: inset 0px 0px 1px rgba(255,255,255,0.40);
+  color: #000;
+  cursor: pointer;
+  float: left;
+  font-size: 8pt;
+  font-weight: bold;
+  height: 22px;
+  line-height: 24px;
+  margin: 7px 1px;
+  padding: 0px 5px;
+  text-shadow: 0px 1px rgba(255,255,255,0.20);
+}
+#maindiv #outer .roomView #right-panel .bottom-bar .panelButtons li:hover {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.40), rgba(255,255,255,0.00)) #a0a0a0;
+  color: #202020;
+}
+#maindiv #outer .roomView #right-panel .bottom-bar .panelButtons li.active {
+  background-color: #606060;
+  box-shadow: inset 0px 1px 1px rgba(0,0,0,0.80), 0px 1px rgba(255,255,255,0.30);
+  color: #202020;
+  text-shadow: 0px 1px rgba(255,255,255,0.20);
+}
+#maindiv #outer .roomView #right-panel .black-right-header {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #202020;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+  cursor: default;
+}
+#maindiv #outer .roomView #right-panel .black-right-header .icon {
+  top: 5px;
+}
+#maindiv #outer .roomView #right-panel .black-right-header .header-text {
+  font-weight: 100;
+  left: 32px;
+}
+#maindiv #outer .roomView .profile {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10), 0px 0px 20px #000;
+  color: #fff;
+  left: 50%;
+  margin-left: -240px;
+  text-shadow: 0px 1px #000;
+}
+#maindiv #outer .roomView .profile .close-x {
+  background: url("https://s3.amazonaws.com/static.turntable.fm/images/index/connect_x_sprite.png") 0px -13px no-repeat;
+  height: 13px;
+  left: auto;
+  right: 20px;
+  top: 15px;
+  width: 12px;
+}
+#maindiv #outer .roomView .profile .close-x:hover {
+  background-position: 0px 0px;
+}
+#maindiv #outer .roomView .profile a {
+  color: #fc0;
+  text-decoration: none;
+}
+#maindiv #footer {
+  bottom: 0;
+  position: absolute;
+}
+.point_display {
+  background-color: #202020;
+}
+.chatResizeIcon {
+  display: none;
+}
+textarea:focus {
+  outline: none;
+}
+::-webkit-scrollbar {
+  background-color: transparent;
+  position: absolute;
+  width: 3px;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-track-piece {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, #ffc800 0%, #ffc800 100%, rgba(0,0,0,0.00) 100%);
+  border-radius: 2px;
+}

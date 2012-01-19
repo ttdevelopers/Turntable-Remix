@@ -1,0 +1,28 @@
+{
+  "name": "Turntable.fm Remix",
+  "version": "0.1",
+  "description": " turntable.fm",
+  "content_scripts": [
+    {
+    "matches": ["http://turntable.fm/*"],
+    "exclude_globs": [
+      "http://turntable.fm/", 
+      "http://turntable.fm/lobby", 
+      "http://turntable.fm/about", 
+      "http://turntable.fm/jobs", 
+      "http://turntable.fm/privacy", 
+      "http://turntable.fm/copyright", 
+      "http://turntable.fm/terms", 
+      "http://turntable.fm/static/*"
+    ],
+    "js": ["js/inject.js"],
+    "run_at": "document_end"
+    }
+  ],
+  "permissions": [
+    "http://turntable.fm*",
+    "http://turntable.fm/",
+    "https://turntable.fm/",
+    "notifications"
+  ]
+}

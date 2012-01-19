@@ -1,0 +1,385 @@
+barGradient()
+  background: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0)) #404040
+  box-shadow: inset 0px 1px rgba(255,255,255,.2), inset 0px -1px rgba(0,0,0,.2)
+
+html
+body
+#maindiv
+#outer
+  height: 100%
+
+body
+  overflow: hidden
+  
+  .loading
+    color: #fff
+    font-size: 10pt
+    font-weight: 100
+    height: 250px
+    left: 50%
+    list-style-type: none
+    margin-left: -100px
+    margin-top: -125px
+    position: absolute
+    top: 50%
+    width: 200px
+    
+    li:nth-child(n+2)
+      padding-left: 10px  
+#maindiv
+  #outer 
+    display: none
+    width: 100%
+    
+    .roomView
+      #top-panel
+        .header
+          box-shadow: inset 0px -1px rgba(255,255,255,.1), 0px 1px 2px rgba(0,0,0,1)
+          
+          .logo
+            background-image: url('https://s3.amazonaws.com/static.turntable.fm/images/index/logo.png')
+            height: 59px
+            top: 0
+          .room-buttons
+            right: 45px
+      #top-panel+div
+        background: -webkit-radial-gradient(center, 50% 100%, rgba(0,0,0,0) 70%, rgba(0,0,0,.8)) center top, -webkit-linear-gradient(top, rgba(0, 0, 0, .3), rgba(0, 0, 0, .9)  177px, rgba(0, 0, 0, 1)  180px, rgba(0, 0, 0, .9) 183px, rgba(0,0,0,.6), rgba(0,0,0,1)), url(http://ttfm.info/images/bg.png) !important
+        top: 60px !important
+        z-index:1
+        
+        #meterGauge
+        #meterNeedle
+        > a:nth-child(2)
+        > a:nth-child(3)
+          display: none
+      #right-panel
+        top: 60px
+        width: 100%
+        
+        .panel
+          display: none
+        .panel.active
+          display: block
+        .playlist-container
+          right: 0
+          top: 150px
+          width: 300px
+          .songlist
+            background: #404040
+            
+            .song
+              background-color: #404040
+              border: 0
+              box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+              
+              .title
+                color: #fff
+                font-weight: 100
+                width: 220px
+              .details
+                color: #fc0
+                font-weight: 100
+                top: 23px
+                width: 220px
+              .remove
+                background: url(https://s3.amazonaws.com/static.turntable.fm/images/index/connect_x_sprite.png) 0px -13px no-repeat
+                height: 13px
+                margin-top: 12px
+                &:hover
+                  background-position: 0px 0px
+            .song:nth-child(even)
+              background: rgba(0,0,0,.1)
+          .mainPane
+            background: #404040
+            
+            .addSongsButton
+            .search
+              left: 46px
+        .info-container
+          background: #202020
+          height: 150px
+          position: absolute
+          right: 0
+          width: 300px
+          .currentSong
+            color: #fff
+            font-size: 10pt
+            line-height: 20px
+            margin: 5px
+          
+          .room
+            background: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0))
+            cursor: help
+            height: 32px
+            line-height: 32px            
+            .favorite
+              background: url(https://s3.amazonaws.com/static.turntable.fm/images/index/favorite_sprite.png) 0px -23px no-repeat
+              cursor: pointer
+              height: 23px
+              left: 5px
+              opacity: .3
+              position: absolute
+              width: 23px
+              top: 4px
+            .favorite-on
+              opacity: 1
+            .name
+              color: #fff
+              font-weight: 100
+              margin-left: 30px
+              text-shadow: 0px 1px #000;
+              width: 270px
+          .feedback
+          .faqButton
+          .url
+          .share-on
+            display: none
+        .chat-container
+          bottom: 0
+          height: 313px !important
+          top: auto !important
+          width: 600px
+          z-index:2
+          
+          .chatHeader
+            bottom: 289px
+            cursor: default
+            position: absolute
+          .messages
+            bottom: 39px
+            font-weight: 100
+            height: 250px !important
+            top: auto
+            .message
+              width: 588px
+          .chatBar
+            barGradient()
+            border-top: 0
+            height: 38px
+            width: 100%
+            
+            .guestListButton
+              display: none
+            .input-box
+              background: none
+              border-left: 0
+              left: 0
+              width: 100%
+              
+              input
+                background: #202020
+                border-radius: 18px
+                box-shadow: 0px 1px rgba(255,255,255,.1), inset 0px 1px rgba(0,0,0,.1)
+                color: #fff
+                font-family: Helvetica, Arial, sans-serif
+                font-size: 12px
+                height: 18px
+                left:0
+                line-height: 18px
+                margin: 5px
+                padding: 5px 10px
+                top:0
+                width: 570px
+                
+        .guest-list-container
+          right: 0
+          top: 150px !important
+          width: 300px
+          
+          .guests
+            background: #404040
+            
+            .guestOptions
+            .guestOptionsNib
+              background: #202020
+              border-color: #000
+              box-shadow: 0 1px 1px rgba(0,0,0,.5)
+              color: #fff
+            .guestOption
+              color: #ff
+            .guestOption:hover
+              background-color: rgba(255,255,255,.1)
+            .guest
+              box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+              color: #fff
+              font-weight: 100
+              text-shadow: 0px 1px rgba(0,0,0,.5)
+            .guest:hover
+              background: transparent
+            .guest:nth-child(even)
+              background: rgba(0,0,0,.1)
+          .chatBar
+            display: none
+        .songlog-container
+          right: 0
+          top: 150px
+          width: 300px
+          
+          .content
+            background: #404040
+            bottom: 0
+            height: 100%
+            left: auto
+            top: auto
+            
+            .infowrap
+              background: #202020
+              color: #fff
+              display: none
+              height: 120px
+              padding: 0
+              top: -120px
+              position: absolute
+              
+              .description
+                padding-left: 5px
+                width: 290px
+                
+                a
+                  color: #fc0
+                  text-decoration: none
+              .description
+              .edit-description
+                height: 85px
+              .edit-description
+                left: 0
+                
+                textarea
+                  background: #000
+                  border: 0
+                  box-shadow: 0px 1px rgba(255,255,255,.1)
+                  color: #fff
+                  font-family: Helvetica, Arial, sans-serif
+                  font-size: 12px
+                  height: 100%
+                  padding: 5px
+                  width: 290px
+            .panel
+              position: absolute
+              top: 0
+              width: 300px
+              
+              > .title
+                background: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0)), url(https://s3.amazonaws.com/static.turntable.fm/images/room/music_icon.png) 6px 5px no-repeat, #202020
+                box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+                color: #fff
+                font-size: 12pt
+                font-weight: 100
+                height: 25px
+                line-height: 25px
+                padding: 0 0 0 32px
+              .songlog
+                background: #404040
+                color: #fff
+                .song
+                  box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+                .song2
+                  background: rgba(0,0,0,.1)
+                .title
+                  font-weight: 100
+          .button
+            display: none
+        .activity-log-container
+          background-color: #404040
+          position: absolute
+          right: 0
+          top: 150px
+          width: 300px
+          
+          .title
+            background: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0)), url(https://s3.amazonaws.com/static.turntable.fm/images/room/guest_list_icon_top.png) 6px 6px no-repeat, #202020
+            box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+            color: #fff
+            font-size: 12pt
+            font-weight: 100
+            height: 25px
+            line-height: 25px
+            padding: 0 0 0 32px
+          ul
+            list-style-type: none
+        .bottom-bar
+          barGradient()
+          bottom: 0
+          height: 38px
+          position: absolute
+          width: 100%
+          z-index: 1
+          
+          .panelButtons
+            list-style-type: none
+            position: absolute
+            right: 3px
+            li
+              background: -webkit-linear-gradient(rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0)) #808080
+              border: 1px rgba(0,0,0,.6) solid
+              border-radius: 4px
+              box-shadow: inset 0px 0px 1px rgba(255,255,255,0.4)
+              color: #000
+              cursor: pointer
+              float: left
+              font-size: 8pt
+              font-weight: bold
+              height: 22px
+              line-height: 24px
+              margin: 7px 1px
+              padding: 0px 5px
+              text-shadow: 0px 1px rgba(255, 255, 255, .2)
+              
+              &:hover
+                background:  -webkit-linear-gradient(rgba(255, 255, 255, 0.4),rgba(255, 255, 255, 0)) #a0a0a0
+                color: #202020
+              &.active
+                background-color: #606060
+                box-shadow: inset 0px 1px 1px rgba(0,0,0,0.8), 0px 1px rgba(255,255,255,0.3)
+                color: #202020
+                text-shadow: 0px 1px rgba(255, 255, 255, .2)
+        .black-right-header
+          background: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0)) #202020
+          box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+          cursor: default
+          .icon
+            top: 5px
+          .header-text
+            font-weight: 100
+            left: 32px
+      .profile
+        background: -webkit-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,0)) #404040
+        border: 0
+        border-radius: 4px
+        box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1), 0px 0px 20px #000
+        color: #fff
+        left: 50%
+        margin-left: -240px
+        text-shadow: 0px 1px #000
+        .close-x
+          background: url(https://s3.amazonaws.com/static.turntable.fm/images/index/connect_x_sprite.png) 0px -13px no-repeat
+          height: 13px
+          left: auto
+          right: 20px
+          top: 15px
+          width: 12px
+          &:hover
+            background-position: 0px 0px
+        a
+          color: #fc0
+          text-decoration: none
+  #footer
+    bottom: 0
+    position: absolute
+
+.point_display
+  background-color: #202020
+.chatResizeIcon
+  display: none
+textarea:focus
+  outline: none
+::-webkit-scrollbar  
+    background-color: transparent
+    position: absolute
+    width: 3px
+::-webkit-scrollbar-track
+::-webkit-scrollbar-track-piece
+    background-color: transparent
+::-webkit-scrollbar-thumb
+  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(255,200,0,1) 0%, rgba(255,200,0,1) 100%, rgba(0,0,0,0) 100%)
+  border-radius: 2px
