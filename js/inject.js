@@ -17,6 +17,6 @@
     inject('js', chrome.extension.getURL("js/backbone.js?v=1_" + new Date().getTime()));   
     inject('js', chrome.extension.getURL("js/script.js?v=1_" + new Date().getTime()));   
     inject('css', chrome.extension.getURL("css/style.css?v=1_" + new Date().getTime()));   
- 
+
 })()
 

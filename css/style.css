@@ -72,6 +72,9 @@ body .loading li:nth-child(n+2) {
   border: 0;
   box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
 }
+#maindiv #outer .roomView #right-panel .playlist-container .songlist .song .progress {
+  background-color: #000;
+}
 #maindiv #outer .roomView #right-panel .playlist-container .songlist .song .title {
   color: #fff;
   font-weight: 100;
@@ -97,9 +100,38 @@ body .loading li:nth-child(n+2) {
 #maindiv #outer .roomView #right-panel .playlist-container .mainPane {
   background: #404040;
 }
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .searchText {
+  color: #fff;
+  width: 208px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .song .addSong {
+  height: 18px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .song .checkmark {
+  height: 19px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .searchingBlocker {
+  background: #202020;
+  color: #fff;
+}
 #maindiv #outer .roomView #right-panel .playlist-container .mainPane .addSongsButton,
-#maindiv #outer .roomView #right-panel .playlist-container .mainPane .search {
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .searchHeader,
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .searchText,
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .search,
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .upload-button {
   left: 46px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .poweredBy {
+  left: 115px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .cancelButton {
+  left: 110px;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .input.songSearch {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
+}
+#maindiv #outer .roomView #right-panel .playlist-container .mainPane .input.songSearch .numFilesAdded {
+  color: #fff;
 }
 #maindiv #outer .roomView #right-panel .info-container {
   background: #202020;
@@ -110,9 +142,58 @@ body .loading li:nth-child(n+2) {
 }
 #maindiv #outer .roomView #right-panel .info-container .currentSong {
   color: #fff;
-  font-size: 10pt;
+  font-size: 12px;
   line-height: 20px;
-  margin: 5px;
+  margin: 0px 10px;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong .info {
+  color: #fc0;
+  height: 20px;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong .info span {
+  color: #fff;
+  left: 55px;
+  overflow: hidden;
+  position: absolute;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 235px;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong .count {
+  background: #404040;
+  border-radius: 4px;
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10);
+  color: #fff;
+  float: left;
+  height: 24px;
+  line-height: 24px;
+  margin: 7px 3px;
+  padding-left: 32px;
+  text-align: center;
+  width: 32px;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong #listeners {
+  background: url("https://s3.amazonaws.com/static.turntable.fm/images/index/buddy_list_friend_icon.png") 7px 5px no-repeat #404040;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong #upvotes {
+  background: url("http://i.imgur.com/WuaW6.png") 8px 3px no-repeat #404040;
+  cursor: pointer;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong #upvotes.active {
+  background-color: rgba(0,255,0,0.20);
+  box-shadow: 0px 0px 10px rgba(0,255,0,0.70);
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong #downvotes {
+  background: url("http://i.imgur.com/SQren.png") 8px 3px no-repeat #404040;
+  cursor: pointer;
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong #downvotes.active {
+  background-color: rgba(255,0,0,0.20);
+  box-shadow: 0px 0px 10px rgba(255,0,0,0.70);
+}
+#maindiv #outer .roomView #right-panel .info-container .currentSong #queues {
+  background: url("https://s3.amazonaws.com/static.turntable.fm/images/room/heart.png") 9px no-repeat #404040;
+  background-size: 14px;
 }
 #maindiv #outer .roomView #right-panel .info-container .room {
   background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00));
@@ -137,8 +218,11 @@ body .loading li:nth-child(n+2) {
   color: #fff;
   font-weight: 100;
   margin-left: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
   text-shadow: 0px 1px #000;
   width: 270px;
+  white-space: nowrap;
 }
 #maindiv #outer .roomView #right-panel .info-container .feedback,
 #maindiv #outer .roomView #right-panel .info-container .faqButton,
@@ -159,7 +243,8 @@ body .loading li:nth-child(n+2) {
   position: absolute;
 }
 #maindiv #outer .roomView #right-panel .chat-container .messages {
-  bottom: 39px;
+  border-bottom: 1px #000 solid;
+  bottom: 38px;
   font-weight: 100;
   height: 250px !important;
   top: auto;
@@ -206,12 +291,19 @@ body .loading li:nth-child(n+2) {
 #maindiv #outer .roomView #right-panel .guest-list-container .guests {
   background: #404040;
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .nibTop .guestOptionsNib {
+  background-image: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.10));
+  box-shadow: none;
+}
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOptions,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOptionsNib {
-  background: #202020;
-  border-color: #000;
+  background-color: #404040;
+  border-color: rgba(0,0,0,0.20);
   box-shadow: 0 1px 1px rgba(0,0,0,0.50);
   color: #fff;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOptions {
+  background-image: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00));
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guestOption {
   color: #fff;
@@ -230,6 +322,16 @@ body .loading li:nth-child(n+2) {
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest:nth-child(even) {
   background: rgba(0,0,0,0.10);
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest.selected {
+  background: rgba(0,0,0,0.50);
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .guestName.fan:after {
+  content: url("http://i.imgur.com/qlymb.png");
+  display: inline-block;
+  height: 25px;
+  padding-left: 5px;
+  vertical-align: bottom;
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .chatBar {
   display: none;
@@ -331,6 +433,23 @@ body .loading li:nth-child(n+2) {
 }
 #maindiv #outer .roomView #right-panel .activity-log-container ul {
   list-style-type: none;
+  overflow: auto;
+}
+#maindiv #outer .roomView #right-panel .activity-log-container ul li {
+  box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10);
+  color: rgba(255,255,255,0.90);
+  font-size: 12px;
+  font-weight: 100;
+  height: 28px;
+  line-height: 28px;
+  margin: 0;
+  overflow: hidden;
+  padding: 0px 5px 0px 32px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#maindiv #outer .roomView #right-panel .activity-log-container ul li:nth-child(even) {
+  background-color: rgba(0,0,0,0.10);
 }
 #maindiv #outer .roomView #right-panel .bottom-bar {
   background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
@@ -384,6 +503,15 @@ body .loading li:nth-child(n+2) {
   font-weight: 100;
   left: 32px;
 }
+#maindiv #outer .roomView #right-panel .black-right-header .header-text #totalUsers {
+  font-size: 9pt;
+}
+#maindiv #outer .roomView #right-panel .black-right-header .header-text #totalUsers:before {
+  content: '(';
+}
+#maindiv #outer .roomView #right-panel .black-right-header .header-text #totalUsers:after {
+  content: ')';
+}
 #maindiv #outer .roomView .profile {
   background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
   border: 0;
@@ -421,6 +549,9 @@ body .loading li:nth-child(n+2) {
 }
 textarea:focus {
   outline: none;
+}
+.mute_btn {
+  z-index: 999999;
 }
 ::-webkit-scrollbar {
   background-color: transparent;

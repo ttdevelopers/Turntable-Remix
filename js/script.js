@@ -10,17 +10,19 @@ var TT = Backbone.Model.extend({
     
     $('body').append(util.buildTree(loading));
     
-    turntable.socket.on('message', this.events.received);
+    turntable.socket.on('message', function(a) { $this.events.received(a) });
         
     this.findObjects();
     
     $(window).resize(function() {
+      console.log(window.resizeTimer)
       clearTimeout(window.resizeTimer)
       window.resizeTimer = setTimeout(function(a,b) {
+        console.log(a.height(), $(window).height())
         if (a.height()==$(window).height()&&a.width()==$(window).width()) {
         	b.resize();
         }
-      }, 250, $(window), $this)
+      }, 1000, $(window), $this)
     })
   },
   findObjects: function() {
@@ -84,11 +86,16 @@ var TT = Backbone.Model.extend({
 		// Room Info click event
 		$('.info-container .room').click(function() { $('.infowrap').toggle() })
     
+    currentSong = (tt.room.currentSong)?tt.room.currentSong.metadata:0;
     var currentSong = [
       'div.currentSong', 
-        ['div#artist', 'Artist:', ['span', tt.room.currentSong.metadata.artist]],
-        ['div#title', 'Title:', ['span', tt.room.currentSong.metadata.song]],
-        ['div#bitrate', 'Bitrate:', ['span', (tt.room.currentSong.metadata.bitrate||128)+'kbps']],
+        ['div#artist.info', 'Artist: ', ['span', (currentSong.artist||'')]],
+        ['div#title.info', 'Title: ', ['span', (currentSong.song||'')]],
+        ['div#bitrate.info', 'Bitrate: ', ['span', (currentSong)?(currentSong.bitrate||128)+'kbps':'']],
+        ['div#listeners.count', '0'],
+        ['div#upvotes.count', {event:{click: function() { $('#downvotes').removeClass('active'); $(this).addClass('active'); tt.room.manager.callback('upvote'); }}}, '0'],
+        ['div#downvotes.count', {event:{click: function() { $('#upvotes').removeClass('active'); $(this).addClass('active'); tt.room.manager.callback('downvote'); }}}, '0'],
+        ['div#queues.count', '0'],
     ];
     
     $('.info-container').append(util.buildTree(currentSong));
@@ -127,14 +134,71 @@ var TT = Backbone.Model.extend({
     var activityLog = [
       'div.activity-log-container.panel', 
         ['div.title', 'Activity Log'],
-        ['ul#activitylog', '']
+        ['ul#activityLog', '']
     ]
     $('#right-panel').append(util.buildTree(activityLog))
 		
 		// Set Active Panel and Panel Button
 		$('.guest-list-container, .panelButtons .guestList').addClass('active');
 
+    // Move $("span#totalUsers") to Guest List title
+    $("span#totalUsers").appendTo($('.guest-list-container .header-text'))
+    
+    // Overwrite guest list name layout method
+
+    Room.layouts.guestListName = function(b, f, c) {
+      var a = "https://s3.amazonaws.com/static.turntable.fm/roommanager_assets/avatars/" + b.avatarid + "/scaled/55/headfront.png";
+      var e = c ? ".guest.selected" : ".guest";
+      var d = "";
+      if (f.isSuperuser(b.userid)) {
+        d = ".superuser";
+      } else {
+        if (f.isMod(b.userid)) {
+          d = ".mod";
+        }
+      }
+      var g = '.'+userTypes[getType(b)];
+      return ["div"+ e, {
+        event: {
+          mouseover: function() {
+            $(this).find("div.guestArrow").show();
+          },
+          mouseout: function() {
+            $(this).find("div.guestArrow").hide();
+          },
+          click: function() {
+            var g = $(this).parent().find("div.guestOptionsContainer");
+            var h = $(this);
+            if (!g.length) {
+              $.proxy(function() {
+                this.addGuestListMenu(b, h);
+              }, f)();
+            } else {
+              if ($(this).hasClass("selected")) {
+                f.removeGuestListMenu();
+              } else {
+                f.removeGuestListMenu($.proxy(function() {
+                  this.addGuestListMenu(b, h);
+                }, f));
+              }
+            }
+          }
+        },
+        data: {
+          id: b.userid
+        }
+      }, ["div.guestAvatar",
+      {}, ["img",
+      {
+        src: a,
+        height: "20"
+      }]], ["div.guestName" + g,
+      {},
+      b.name], ["div.guestArrow"]];
+    }
+    
     // Overwrite current Guest List sorting method
+    var userTypes = ['verified', 'superuser', 'superuser', 'mod', 'dj', 'fan', 'listener'];
     var getType = function (a) {
     	var b = 6;
     	if (tt.user.fanOf.indexOf(a.userid)>=0) { b = 5; }
@@ -145,6 +209,7 @@ var TT = Backbone.Model.extend({
     	if (tt.room.djIds.indexOf(a.userid)>=0) { b = 4; }
     	return b;
     }
+    tt.room.snags=0;
     
     tt.room.updateGuestList = function () {
         var b = [],
@@ -189,6 +254,7 @@ var TT = Backbone.Model.extend({
     $('#outer, .loading').toggle();
   },
   resize: function() {
+    console.log('resizing..')
     var height = $(window).height(),
         width = $(window).width(),
         roomWidth = width - 300,
@@ -314,10 +380,52 @@ var TT = Backbone.Model.extend({
       }
     },
     newsong: function(a) {
-      currentSong = a.room.metadata.currentSong.metadata;
+      var room = a.room.metadata;
+      var currentSong = a.room.metadata.current_song.metadata;
+      var activity = ['li', {title: currentSong.song+' by '+currentSong.artist}, turntable.room.users[a.room.metadata.current_dj].name+' started playing '+currentSong.song+' by '+currentSong.artist+'.']
+      $('.count').removeClass('active');
+      tt.room.snags=0;
+      $('#activityLog').prepend(util.buildTree(activity))     
       $('#artist span').html(currentSong.artist);
       $('#title span').html(currentSong.song);
       $('#bitrate span').html((currentSong.bitrate||128)+'kbps');
+      $('#listeners').html(room.listeners);
+      $('#upvotes').html(room.upvotes);
+      $('#downvotes').html(room.downvotes);
+    },
+    registered: function(a) {
+      var activity = ['li', a.user[0].name+' joined the room.']
+      $('#activityLog').prepend(util.buildTree(activity))
+    },
+    deregistered: function(a) {
+      var activity = ['li', a.user[0].name+' left the room.']
+      $('#activityLog').prepend(util.buildTree(activity))
+    },
+    update_votes: function(a) {
+      console.log('Update votes: ',a);
+      var votes = a.room.metadata.votelog;
+      var room = a.room.metadata;      
+      for (i in votes) {
+        var activity = ['li', ((turntable.room.users[votes[i][0]]&&turntable.room.users[votes[i][0]].name)||'Anonymous user')+' voted '+votes[i][1]+'.']
+        $('#activityLog').prepend(util.buildTree(activity))
+      }
+      $('#listeners').html(room.listeners);
+      $('#upvotes').html(room.upvotes);
+      $('#downvotes').html(room.downvotes);
+    },
+    update_user: function(a) {
+      console.log(a);
+      var activity;
+      if (a.fans) { activity = ['li', turntable.room.users[a.userid].name+' '+((a.fans>0)?'gained':'lost')+' a fan.']; }
+      if (a.avatarid) { 
+        avatar="https://s3.amazonaws.com/static.turntable.fm/roommanager_assets/avatars/" + a.avatarid + "/scaled/55/headfront.png";
+        activity = ['li',{'data-avatar': avatar}, turntable.room.users[a.userid].name+' changed their avatar.']; 
+      }
+      $('#activityLog').prepend(util.buildTree(activity))
+    },
+    snagged: function(a) {
+      tt.room.snags++;
+      $('#queues').html(tt.room.snags);
     }
   }
 })

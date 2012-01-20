@@ -72,6 +72,8 @@ body
               border: 0
               box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
               
+              .progress
+                background-color: #000
               .title
                 color: #fff
                 font-weight: 100
@@ -91,10 +93,31 @@ body
               background: rgba(0,0,0,.1)
           .mainPane
             background: #404040
-            
+            .searchText
+              color: #fff
+              width: 208px
+            .song
+              .addSong
+                height: 18px
+              .checkmark
+                height: 19px    
+            .searchingBlocker
+              background: #202020
+              color: #fff
             .addSongsButton
+            .searchHeader
+            .searchText
             .search
+            .upload-button
               left: 46px
+            .poweredBy
+              left: 115px
+            .cancelButton
+              left: 110px
+            .input.songSearch
+              background: -webkit-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,0)) #404040
+              .numFilesAdded
+                color: #fff
         .info-container
           background: #202020
           height: 150px
@@ -103,10 +126,51 @@ body
           width: 300px
           .currentSong
             color: #fff
-            font-size: 10pt
+            font-size: 12px
             line-height: 20px
-            margin: 5px
-          
+            margin: 0px 10px
+            
+            .info
+              color: #fc0
+              height: 20px
+              
+              span
+                color: #fff
+                left: 55px
+                overflow: hidden
+                position: absolute
+                text-overflow: ellipsis
+                white-space: nowrap
+                width: 235px
+            .count
+              background: #404040
+              border-radius: 4px
+              box-shadow: inset 0px 1px rgba(255,255,255,.1) 
+              color: #fff
+              float: left
+              height: 24px
+              line-height: 24px
+              margin: 7px 3px
+              padding-left: 32px
+              text-align: center
+              width: 32px
+            #listeners
+              background: url(https://s3.amazonaws.com/static.turntable.fm/images/index/buddy_list_friend_icon.png) 7px 5px no-repeat #404040
+            #upvotes
+              background: url(http://i.imgur.com/WuaW6.png) 8px 3px no-repeat #404040
+              cursor: pointer
+              &.active
+                background-color: rgba(0,255,0,.2)
+                box-shadow: 0px 0px 10px rgba(0,255,0,.7)
+            #downvotes
+              background: url(http://i.imgur.com/SQren.png) 8px 3px no-repeat #404040
+              cursor: pointer
+              &.active
+                background-color: rgba(255,0,0,.2)
+                box-shadow: 0px 0px 10px rgba(255,0,0,.7)
+            #queues
+              background: url(https://s3.amazonaws.com/static.turntable.fm/images/room/heart.png) 9px no-repeat #404040
+              background-size: 14px
           .room
             background: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0))
             cursor: help
@@ -127,8 +191,11 @@ body
               color: #fff
               font-weight: 100
               margin-left: 30px
+              overflow: hidden
+              text-overflow: ellipsis
               text-shadow: 0px 1px #000;
               width: 270px
+              white-space: nowrap
           .feedback
           .faqButton
           .url
@@ -146,7 +213,8 @@ body
             cursor: default
             position: absolute
           .messages
-            bottom: 39px
+            border-bottom: 1px #000 solid
+            bottom: 38px
             font-weight: 100
             height: 250px !important
             top: auto
@@ -188,13 +256,18 @@ body
           
           .guests
             background: #404040
-            
+            .nibTop
+              .guestOptionsNib
+                background-image: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,.1)) 
+                box-shadow: none
             .guestOptions
             .guestOptionsNib
-              background: #202020
-              border-color: #000
+              background-color: #404040
+              border-color: rgba(0,0,0,.2)
               box-shadow: 0 1px 1px rgba(0,0,0,.5)
               color: #fff
+            .guestOptions
+              background-image: -webkit-linear-gradient(rgba(255,255,255,.1),rgba(255,255,255,0))
             .guestOption
               color: #ff
             .guestOption:hover
@@ -204,10 +277,21 @@ body
               color: #fff
               font-weight: 100
               text-shadow: 0px 1px rgba(0,0,0,.5)
-            .guest:hover
-              background: transparent
-            .guest:nth-child(even)
-              background: rgba(0,0,0,.1)
+              
+              &:hover
+                background: transparent
+              &:nth-child(even)
+                background: rgba(0,0,0,.1)
+              &.selected
+                background: rgba(0,0,0,.5)
+              .guestName
+                &.fan
+                  &:after
+                    content: url(http://i.imgur.com/qlymb.png)
+                    display: inline-block
+                    height: 25px
+                    padding-left: 5px
+                    vertical-align: bottom
           .chatBar
             display: none
         .songlog-container
@@ -297,6 +381,23 @@ body
             padding: 0 0 0 32px
           ul
             list-style-type: none
+            overflow: auto
+            
+            li
+              box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+              color: rgba(255,255,255,.9)
+              font-size: 12px
+              font-weight: 100
+              height: 28px
+              line-height: 28px
+              margin: 0
+              overflow: hidden
+              padding: 0px 5px 0px 32px 
+              text-overflow: ellipsis
+              white-space: nowrap
+              
+              &:nth-child(even)
+                background-color: rgba(0,0,0,.1)
         .bottom-bar
           barGradient()
           bottom: 0
@@ -342,6 +443,13 @@ body
           .header-text
             font-weight: 100
             left: 32px
+            
+            #totalUsers
+              font-size: 9pt
+              &:before
+                content: '('
+              &:after
+                content: ')'
       .profile
         background: -webkit-linear-gradient(rgba(255,255,255,.1), rgba(255,255,255,0)) #404040
         border: 0
@@ -373,6 +481,8 @@ body
   display: none
 textarea:focus
   outline: none
+.mute_btn
+  z-index: 999999
 ::-webkit-scrollbar  
     background-color: transparent
     position: absolute
