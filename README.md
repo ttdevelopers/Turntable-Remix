@@ -12,13 +12,13 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 * Awesome & Lame count UI double as buttons
 * To display room info, simply click the room name.
 * Guest list is now sorted in the following order by type;
-** Verified Account
-** Gatekeeper
-** Superuser
-** Moderator
-** DJ 
-** Fan of
-** Listener
+ * Verified Account
+ * Gatekeeper
+ * Superuser
+ * Moderator
+ * DJ 
+ * Fan of
+ * Listener
 * There is only one icon per guest; currently only superuser, moderator or fan of.
 * The highest ranking type of the user will be the icon displayed.
 
