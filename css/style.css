@@ -143,12 +143,12 @@ body .loading li:nth-child(n+2) {
 #maindiv #outer .roomView #right-panel .info-container .currentSong {
   color: #fff;
   font-size: 12px;
-  line-height: 20px;
+  line-height: 24px;
   margin: 0px 10px;
 }
 #maindiv #outer .roomView #right-panel .info-container .currentSong .info {
   color: #fc0;
-  height: 20px;
+  height: 24px;
 }
 #maindiv #outer .roomView #right-panel .info-container .currentSong .info span {
   color: #fff;

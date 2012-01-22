@@ -15,7 +15,6 @@ var TT = Backbone.Model.extend({
     this.findObjects();
     
     $(window).resize(function() {
-      console.log(window.resizeTimer)
       clearTimeout(window.resizeTimer)
       window.resizeTimer = setTimeout(function(a,b) {
         console.log(a.height(), $(window).height())
@@ -53,7 +52,6 @@ var TT = Backbone.Model.extend({
     }
   },
   setup: function() {
-
     // Add missing speaker states? (see speaker.states)
     speaker.states.on.push(['lspeaker2',0,0]);
     speaker.states.on.push(['lspeaker3',0,0]);
@@ -140,12 +138,11 @@ var TT = Backbone.Model.extend({
 		
 		// Set Active Panel and Panel Button
 		$('.guest-list-container, .panelButtons .guestList').addClass('active');
-
-    // Move $("span#totalUsers") to Guest List title
-    $("span#totalUsers").appendTo($('.guest-list-container .header-text'))
-    
+    // Overwrite setPage method
+    turntable.setPage = function(a,b) {
+      window.location = '/'+ (a||b);
+    }
     // Overwrite guest list name layout method
-
     Room.layouts.guestListName = function(b, f, c) {
       var a = "https://s3.amazonaws.com/static.turntable.fm/roommanager_assets/avatars/" + b.avatarid + "/scaled/55/headfront.png";
       var e = c ? ".guest.selected" : ".guest";
@@ -254,7 +251,6 @@ var TT = Backbone.Model.extend({
     $('#outer, .loading').toggle();
   },
   resize: function() {
-    console.log('resizing..')
     var height = $(window).height(),
         width = $(window).width(),
         roomWidth = width - 300,
@@ -402,7 +398,6 @@ var TT = Backbone.Model.extend({
       $('#activityLog').prepend(util.buildTree(activity))
     },
     update_votes: function(a) {
-      console.log('Update votes: ',a);
       var votes = a.room.metadata.votelog;
       var room = a.room.metadata;      
       for (i in votes) {
@@ -414,7 +409,6 @@ var TT = Backbone.Model.extend({
       $('#downvotes').html(room.downvotes);
     },
     update_user: function(a) {
-      console.log(a);
       var activity;
       if (a.fans) { activity = ['li', turntable.room.users[a.userid].name+' '+((a.fans>0)?'gained':'lost')+' a fan.']; }
       if (a.avatarid) { 
