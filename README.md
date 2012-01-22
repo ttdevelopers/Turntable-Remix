@@ -10,6 +10,7 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 
 ##Latest Changes##
 **01.22.12**
+
 * Added Auto-awesome, which can be enabled by clicking the awesome button a second time
 * Listener, upvote and downvote counts now update on room entry
 
