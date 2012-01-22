@@ -183,6 +183,9 @@ body .loading li:nth-child(n+2) {
   background-color: rgba(0,255,0,0.20);
   box-shadow: 0px 0px 10px rgba(0,255,0,0.70);
 }
+#maindiv #outer .roomView #right-panel .info-container .currentSong #upvotes.auto {
+  box-shadow: 0px 0px 10px rgba(0,255,0,0.70), inset 0px 0px 3px #0f0;
+}
 #maindiv #outer .roomView #right-panel .info-container .currentSong #downvotes {
   background: url("http://i.imgur.com/SQren.png") 8px 3px no-repeat #404040;
   cursor: pointer;
@@ -519,7 +522,7 @@ body .loading li:nth-child(n+2) {
   box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10), 0px 0px 20px #000;
   color: #fff;
   left: 50%;
-  margin-left: -240px;
+  margin-left: -390px;
   text-shadow: 0px 1px #000;
 }
 #maindiv #outer .roomView .profile .close-x {

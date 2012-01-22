@@ -8,6 +8,12 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 3. Load unpacked extension
 4. Load/refresh turntable.fm
 
+##Latest Changes##
+**01.22.12**
+* Added Auto-awesome, which can be enabled by clicking the awesome button a second time
+* Listener, upvote and downvote counts now update on room entry
+
+
 ##Notes##
 * Awesome & Lame count UI double as buttons
 * To display room info, simply click the room name.
@@ -23,9 +29,7 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 * The highest ranking type of the user will be the icon displayed.
 
 ##Todo##
-* Update listener, upvote and downvote count on entry
 * Prevent activity log changing position when scrolled down
-* Auto-awesome toggle feature
 * Username tab completion in chat
 * Auto-mute feature
 * Notifications
