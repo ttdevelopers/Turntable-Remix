@@ -439,19 +439,19 @@
           }
         }
         if (b.room&&!b.command) {
-          console.log(b)
           var users = b.users;
           $this.currentSong = new CurrentSong();
-          var currentSong = b.room.metadata.current_song.metadata;
-          $this.currentSong.set({
-            artist: currentSong.artist,
-            title: currentSong.song,
-            bitrate: (currentSong.bitrate||128)+'kbps',
-            upvotes: b.room.metadata.upvotes,
-            downvotes: b.room.metadata.downvotes
-          })
+          var currentSong = (b.room.metadata.current_song)?b.room.metadata.current_song.metadata:null;
+          if (currentSong) {
+            $this.currentSong.set({
+              artist: currentSong.artist,
+              title: currentSong.song,
+              bitrate: (currentSong.bitrate||128)+'kbps',
+              upvotes: b.room.metadata.upvotes,
+              downvotes: b.room.metadata.downvotes
+            })
+          }
           votelog = b.room.metadata.votelog;
-          console.log(votelog);
           voterIds = _.pluck(votelog, '0');
           voterIndex = voterIds.indexOf(tt.user.id);
           if (voterIndex>=0) {
@@ -533,6 +533,7 @@
         $('#activityLog').prepend(util.buildTree(activity))       
       });
       this.bind('remove', function(m,co) {
+        $('#listeners').html(_.size(co));
         var activity = ['li', m.previous('name')+' left the room.'];
         $('#activityLog').prepend(util.buildTree(activity))      
       })
