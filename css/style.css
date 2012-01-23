@@ -6,6 +6,8 @@ body,
 }
 body {
   overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 }
 body .loading {
   color: #fff;
@@ -198,6 +200,10 @@ body .loading li:nth-child(n+2) {
   background: url("https://s3.amazonaws.com/static.turntable.fm/images/room/heart.png") 9px no-repeat #404040;
   background-size: 14px;
 }
+#maindiv #outer .roomView #right-panel .info-container .currentSong #queues.active {
+  background-color: rgba(255,0,0,0.20);
+  box-shadow: 0px 0px 10px rgba(255,0,0,0.70);
+}
 #maindiv #outer .roomView #right-panel .info-container .room {
   background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00));
   cursor: help;
@@ -235,22 +241,36 @@ body .loading li:nth-child(n+2) {
 }
 #maindiv #outer .roomView #right-panel .chat-container {
   bottom: 0;
-  height: 313px !important;
   top: auto !important;
   width: 600px;
   z-index: 2;
 }
 #maindiv #outer .roomView #right-panel .chat-container .chatHeader {
+  border-radius: 4px 4px 0px 0px;
   bottom: 289px;
   cursor: default;
   position: absolute;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatHeader .chatResizeIcon {
+  background-clip: padding-box;
+  background-position: 0px -8px;
+  border: 10px transparent solid;
+  cursor: pointer;
+  display: block;
+  height: 5px;
+  right: 0px;
+  top: 0px;
+}
+#maindiv #outer .roomView #right-panel .chat-container .chatHeader .chatResizeIcon.minimized {
+  background-position: 0px 0px;
 }
 #maindiv #outer .roomView #right-panel .chat-container .messages {
   border-bottom: 1px #000 solid;
   bottom: 38px;
   font-weight: 100;
-  height: 250px !important;
   top: auto;
+  user-select: text;
+  -webkit-user-select: text;
 }
 #maindiv #outer .roomView #right-panel .chat-container .messages .message {
   width: 588px;
@@ -518,12 +538,13 @@ body .loading li:nth-child(n+2) {
 #maindiv #outer .roomView .profile {
   background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
   border: 0;
-  border-radius: 4px;
+  border-radius: 0px 0px 4px 4px;
   box-shadow: inset 0px 1px rgba(255,255,255,0.10), inset 0px -1px rgba(0,0,0,0.10), 0px 0px 20px #000;
   color: #fff;
   left: 50%;
   margin-left: -390px;
   text-shadow: 0px 1px #000;
+  top: 0;
 }
 #maindiv #outer .roomView .profile .close-x {
   background: url("https://s3.amazonaws.com/static.turntable.fm/images/index/connect_x_sprite.png") 0px -13px no-repeat;
@@ -536,6 +557,15 @@ body .loading li:nth-child(n+2) {
 #maindiv #outer .roomView .profile .close-x:hover {
   background-position: 0px 0px;
 }
+#maindiv #outer .roomView .profile .info {
+  overflow: hidden;
+  width: 240px;
+}
+#maindiv #outer .roomView .profile .info .name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 #maindiv #outer .roomView .profile a {
   color: #fc0;
   text-decoration: none;
@@ -543,6 +573,18 @@ body .loading li:nth-child(n+2) {
 #maindiv #footer {
   bottom: 0;
   position: absolute;
+}
+.overlay .modal {
+  background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
+  border: 0;
+  border-radius: 4px;
+  left: 50%;
+  margin-left: -355px;
+  position: absolute;
+}
+.overlay .modal a {
+  color: #fc0;
+  text-decoration: none;
 }
 .point_display {
   background-color: #202020;

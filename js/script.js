@@ -1,6 +1,13 @@
 (function(window, undefined) {
   var $this;
+  versionCheck = function(a) {
+    if (a.version!=$this.version) {
+      var updateMessage = ['div', ['strong', 'Turntable Remix Update Available'], ['div', 'Your currently have version '+$this.version, ['br'], ['a', {href: 'http://github.com/overra/Turntable-Remix'}, 'Click here'], ' to get the latest version!', ['br'], ['br'], 'Clicking OK to ignore.']]
+      turntable.showAlert(util.buildTree(updateMessage))
+    }
+  }
   var TT = Backbone.Model.extend({
+    version: '0.1.1',
     initialize: function() {
       $this = this;
       
@@ -21,7 +28,6 @@
       $(window).resize(function() {
         clearTimeout(window.resizeTimer)
         window.resizeTimer = setTimeout(function(a,b) {
-          console.log(a.height(), $(window).height())
           if (a.height()==$(window).height()&&a.width()==$(window).width()) {
           	b.resize();
           }
@@ -74,7 +80,21 @@
         dj_locations: dj_locations.map(copyArr),
         spotlight_locations: spotlight_locations.map(copyArr)
       }
-  
+      // Bind click event to Chat Minimize 
+      $('.chat-container .chatResizeIcon').click(function() {
+        $(this).toggleClass('minimized');
+        if ($('.chat-container .messages').height()=='0') {
+          $('.chat-container').animate({height: $this.roomHeight*.4}, 1000)
+          $('.chat-container .messages').animate({height: $this.roomHeight*.4-38-25}, 1000)
+          $('.chat-container .messages').scrollTop += 9001;
+          $('.chat-container .chatHeader').animate({bottom: $this.roomHeight*.4-25}, 1000)
+        }
+        else {
+          $('.chat-container').animate({height: 38+25}, 1000)
+          $('.chat-container .messages').animate({height: 0}, 1000)
+          $('.chat-container .chatHeader').animate({bottom: 38}, 1000)
+        }
+      })
       // Append Bottom Bar
       $('<div class="bottom-bar">').appendTo('#right-panel');
   
@@ -109,6 +129,10 @@
           tt.room.manager.callback('upvote'); 
         } 
       };
+      var queueClickEvent = function() {
+        $(this).addClass('active');
+        tt.room.manager.callback('add_song_to', 'queue');
+      }
       var currentSong = [
         'div.currentSong', 
           ['div#artist.info', 'Artist: ', ['span', (currentSong.artist||'')]],
@@ -117,7 +141,7 @@
           ['div#listeners.count', this.listeners.length],
           ['div#upvotes.count', {event:{click: upvoteClickEvent}}, this.currentSong.get('upvotes')],
           ['div#downvotes.count', {event:{click: function() { $('#upvotes').removeClass('active'); $(this).addClass('active'); tt.room.manager.callback('downvote'); }}}, this.currentSong.get('downvotes')],
-          ['div#queues.count', '0'],
+          ['div#queues.count', {event:{click: queueClickEvent}}, '0'],
       ];
 
       $('.info-container').append(util.buildTree(currentSong));
@@ -274,15 +298,19 @@
       // Unbind .chatHeader mousedown event
       $('.chatHeader').unbind('mousedown');
       
-      // 
-  
+      // Hide loading screen, show room
       $('#outer, .loading').toggle();
+      
+      $.ajax({
+        url: 'http://turntableremix.com/version',
+        dataType: 'jsonp'
+      })
     },
     resize: function() {
       var height = $(window).height(),
           width = $(window).width(),
-          roomWidth = width - 300,
-          roomHeight = height - 60;
+          roomWidth = this.roomWidth = width - 300,
+          roomHeight = this.roomHeight = height - 60;
       
       // Resize
       $('#right-panel').css({height: roomHeight })                      // Right Panel
@@ -299,6 +327,9 @@
       $('.songlog-container .panel .songlog').css({height: roomHeight-39-25-150});    // Songlog Element
       $('.activity-log-container').css({height: roomHeight-39-150});                  // Activity Log Container
       $('.activity-log-container #activityLog').css({height: roomHeight-39-25-150});  // Songlog Panel Element
+      $('.chat-container').css({height: roomHeight*.4});  // Songlog Panel Element
+      $('.chat-container .messages').css({height: roomHeight*.4-38-25});  // Songlog Panel Element
+      $('.chat-container .chatHeader').css({bottom: roomHeight*.4-25});  // Songlog Panel Element
   
           
       // Reposition
@@ -483,7 +514,7 @@
         $('#activityLog').prepend(util.buildTree(activity))
       },
       snagged: function(a) {
-        $this.currentSong.snag();
+        $this.currentSong.snag(a);
       },
       add_dj: function(a) {
         tt.room.updateGuestList();
@@ -531,9 +562,12 @@
       this.bind('change:bitrate', function(m, a) { $('#bitrate span').html(a); });
       this.bind('change:upvotes', function(m, a) { $('#upvotes').html(a); });
       this.bind('change:downvotes', function(m, a) { $('#downvotes').html(a); });
+      this.bind('change:queues', function(m, a) { $('#queues').html(a); });
       $('#upvotes, #downvotes, #queues').html(0);
     },
-    snag: function() {
+    snag: function(a) {
+      var activity = ['li', tt.room.users[a.userid].name+' queued the song.'];
+      $('#activityLog').prepend(util.buildTree(activity))  
       var queues = this.get('queues');
       this.set({queues: ++queues})
     }

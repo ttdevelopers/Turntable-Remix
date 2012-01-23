@@ -10,7 +10,11 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 
 ##Latest Changes##
 **01.22.12**
-
+* Fixed queue count
+* Added version checking! Now you'll be made aware when a new version is available.
+* Double clicking buttons should no longer select elements on the page
+* Queue count UI now doubles as button to add song to queue
+* Added chat minimize feature 
 * Added Auto-awesome, which can be enabled by clicking the awesome button a second time
 * Listener, upvote and downvote counts now update on room entry
 
