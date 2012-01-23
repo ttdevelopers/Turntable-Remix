@@ -243,7 +243,7 @@ body .loading li:nth-child(n+2) {
   bottom: 0;
   top: auto !important;
   width: 600px;
-  z-index: 2;
+  z-index: 3;
 }
 #maindiv #outer .roomView #right-panel .chat-container .chatHeader {
   border-radius: 4px 4px 0px 0px;
@@ -340,6 +340,41 @@ body .loading li:nth-child(n+2) {
   font-weight: 100;
   text-shadow: 0px 1px rgba(0,0,0,0.50);
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons {
+  display: inline-block;
+  height: 28px;
+  position: absolute;
+  right: 28px;
+  width: 100px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons div {
+  float: right;
+  margin: 0px 3px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .fan {
+  background: url("http://i.imgur.com/qlymb.png");
+  height: 14px;
+  margin-top: 6px;
+  width: 15px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .mod {
+  background: url("http://static.turntable.fm.s3.amazonaws.com/images/room/mod_icon.png");
+  height: 14px;
+  margin-top: 7px;
+  width: 12px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .superuser {
+  background: url("http://static.turntable.fm.s3.amazonaws.com/images/room/superuser_icon.png");
+  height: 15px;
+  margin-top: 7px;
+  width: 15px;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .dj {
+  background: url("http://i.imgur.com/cE9h5.png");
+  height: 11px;
+  margin-top: 9px;
+  width: 13px;
+}
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest:hover {
   background: transparent;
 }
@@ -348,13 +383,6 @@ body .loading li:nth-child(n+2) {
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest.selected {
   background: rgba(0,0,0,0.50);
-}
-#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .guestName.fan:after {
-  content: url("http://i.imgur.com/qlymb.png");
-  display: inline-block;
-  height: 25px;
-  padding-left: 5px;
-  vertical-align: bottom;
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .chatBar {
   display: none;
@@ -556,6 +584,9 @@ body .loading li:nth-child(n+2) {
 }
 #maindiv #outer .roomView .profile .close-x:hover {
   background-position: 0px 0px;
+}
+#maindiv #outer .roomView .profile .social {
+  height: 40px;
 }
 #maindiv #outer .roomView .profile .info {
   overflow: hidden;

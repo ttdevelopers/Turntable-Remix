@@ -212,7 +212,7 @@ body
           bottom: 0
           top: auto !important
           width: 600px
-          z-index:2
+          z-index:3
           
           .chatHeader
             border-radius: 4px 4px 0px 0px
@@ -298,20 +298,43 @@ body
               font-weight: 100
               text-shadow: 0px 1px rgba(0,0,0,.5)
               
+              .icons
+                display: inline-block
+                height: 28px
+                position: absolute
+                right: 28px
+                width: 100px
+                
+                div
+                  float: right
+                  margin: 0px 3px
+                .fan
+                  background: url(http://i.imgur.com/qlymb.png)
+                  height: 14px
+                  margin-top: 6px
+                  width: 15px
+                .mod
+                  background: url(http://static.turntable.fm.s3.amazonaws.com/images/room/mod_icon.png)
+                  height: 14px
+                  margin-top: 7px
+                  width: 12px
+                .superuser
+                  background: url(http://static.turntable.fm.s3.amazonaws.com/images/room/superuser_icon.png)
+                  height: 15px
+                  margin-top: 7px
+                  width: 15px
+                .dj
+                  background: url(http://i.imgur.com/cE9h5.png)
+                  height:11px
+                  margin-top: 9px
+                  width: 13px
               &:hover
                 background: transparent
               &:nth-child(even)
                 background: rgba(0,0,0,.1)
               &.selected
                 background: rgba(0,0,0,.5)
-              .guestName
-                &.fan
-                  &:after
-                    content: url(http://i.imgur.com/qlymb.png)
-                    display: inline-block
-                    height: 25px
-                    padding-left: 5px
-                    vertical-align: bottom
+
           .chatBar
             display: none
         .songlog-container
@@ -489,6 +512,8 @@ body
           width: 12px
           &:hover
             background-position: 0px 0px
+        .social
+          height: 40px
         .info
           overflow: hidden
           width: 240px

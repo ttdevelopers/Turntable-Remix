@@ -9,6 +9,13 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 4. Load/refresh turntable.fm
 
 ##Latest Changes##
+**01.23.12**
+
+* Fixed guest list user icons. Now more than one icon will show.
+* Added DJ Guest List icon
+* DJ Add/Remove Events now logged in activity log.
+* Konami Code (requested by the[doctor]) easter egg
+
 **01.22.12**
 
 * Fixed queue count

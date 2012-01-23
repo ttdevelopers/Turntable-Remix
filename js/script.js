@@ -65,6 +65,13 @@
       this.now = now;
       delete now;
     
+      $('<img src="http://i.imgur.com/BfJU2.png" id="konami">').css({position: 'absolute', left: '50%', marginLeft: '-300px', bottom: '-244px', width: '300px', zIndex: 2}).appendTo('#right-panel');
+      var konami = new Konami();
+      konami.code = function() {
+        $('#konami').animate({bottom: '200px'}, 1000, function(){ setTimeout(function(a) { a.animate({bottom: '-244px'}, 5000) }, 2000, $(this)) })
+      }
+      konami.load();
+    
       // Add missing speaker states? (see speaker.states)
       speaker.states.on.push(['lspeaker2',0,0]);
       speaker.states.on.push(['lspeaker3',0,0]);
@@ -85,8 +92,9 @@
         $(this).toggleClass('minimized');
         if ($('.chat-container .messages').height()=='0') {
           $('.chat-container').animate({height: $this.roomHeight*.4}, 1000)
-          $('.chat-container .messages').animate({height: $this.roomHeight*.4-38-25}, 1000)
-          $('.chat-container .messages').scrollTop += 9001;
+          $('.chat-container .messages').animate({height: $this.roomHeight*.4-38-25}, 1000, function() {
+            $('.chat-container .messages').scrollTop += 9001;          
+          })
           $('.chat-container .chatHeader').animate({bottom: $this.roomHeight*.4-25}, 1000)
         }
         else {
@@ -147,7 +155,7 @@
       $('.info-container').append(util.buildTree(currentSong));
 
       var hasVoted = this.currentSong.get('hasVoted');
-      if (hasVoted) { console.log(hasVoted); $('#'+hasVoted+'votes').addClass('active'); }
+      if (hasVoted) { $('#'+hasVoted+'votes').addClass('active'); }
       
       
   		// Creating Panel Buttons UI Tree
@@ -206,7 +214,13 @@
             d = ".mod";
           }
         }
-        var g = '.'+userTypes[getType(b)];
+        var uT = getType(b, true);
+        for (i in uT) {
+          uT[i] = ['div.'+uT[i]];
+        }
+        uT.splice(0,0,'div.icons');
+
+        var g = uT;
         return ["div"+ e, {
           event: {
             mouseover: function() {
@@ -241,22 +255,26 @@
         {
           src: a,
           height: "20"
-        }]], ["div.guestName" + g,
+        }]], ["div.guestName",
         {},
-        b.name], ["div.guestArrow"]];
+        b.name], g, ["div.guestArrow"]];
       }
       
       // Overwrite current Guest List sorting method
       var userTypes = ['verified', 'superuser', 'superuser', 'mod', 'dj', 'fan', 'listener'];
-      var getType = function (a) {
-      	var b = 6;
-      	if (tt.user.fanOf.indexOf(a.userid)>=0) { b = 5; }
-      	if (a['verified']) { b = 0; }
-      	if (a.acl>1) { b = 1; }
-      	if (a.acl==1) { b = 2; }
-      	if (tt.room.moderators.indexOf(a.userid)>=0) { b = 3; }
-      	if (tt.room.djIds.indexOf(a.userid)>=0) { b = 4; }
-      	return b;
+      var getType = function (a,d) {
+      	var b = 6; 
+      	var c = [6];
+      	if (tt.user.fanOf.indexOf(a.userid)>=0) { b = 5; c.splice(0,0,5); }
+      	if (a['verified']) { b = 0; c.splice(0,0,0); }
+      	if (a.acl>1) { b = 1; c.splice(0,0,1); }
+      	if (a.acl==1) { b = 2; c.splice(0,0,2); }
+      	if (tt.room.moderators.indexOf(a.userid)>=0) { b = 3; c.splice(0,0,3); }
+      	if (tt.room.djIds.indexOf(a.userid)>=0) { b = 4; c.splice(0,0,4); }
+      	if (d) {
+      	  c=c.map(function(a) { return userTypes[a]; })
+      	}
+      	return (d)?c:b;
       }
       tt.room.snags=0;
       
@@ -517,9 +535,13 @@
         $this.currentSong.snag(a);
       },
       add_dj: function(a) {
+        var activity = ['li', a.user[0].name+' became a DJ.'];
+        $('#activityLog').prepend(util.buildTree(activity));
         tt.room.updateGuestList();
       },
       rem_dj: function(a) {
+        var activity = ['li', a.user[0].name+' is no longer a DJ.'];
+        $('#activityLog').prepend(util.buildTree(activity));
         tt.room.updateGuestList();
       }
     }
