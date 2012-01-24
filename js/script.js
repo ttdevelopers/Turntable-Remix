@@ -93,7 +93,7 @@
         if ($('.chat-container .messages').height()=='0') {
           $('.chat-container').animate({height: $this.roomHeight*.4}, 1000)
           $('.chat-container .messages').animate({height: $this.roomHeight*.4-38-25}, 1000, function() {
-            $('.chat-container .messages').scrollTop += 9001;          
+            $('.chat-container .messages').scrollTop(99999);          
           })
           $('.chat-container .chatHeader').animate({bottom: $this.roomHeight*.4-25}, 1000)
         }
@@ -166,25 +166,31 @@
   		    $(this).addClass('active');
   		    $('.panel.active').removeClass('active'); 
   		    $('.playlist-container').addClass('active'); 
-  		  } } }, 'My Queue'],
+  		  } } }, 'Playlist'],
   		  ['li.recentSongs', {event: {click: function(){ 
   		    $(this).siblings().removeClass('active'); 
   		    $(this).addClass('active');
   		    $('.panel.active').removeClass('active'); 
   		    $('.songlog-container .panel').addClass('active'); 
-  		  } } }, 'Recent Songs'],
+  		  } } }, 'Recent'],
   		  ['li.guestList', {event: {click: function(){ 
   		    $(this).siblings().removeClass('active'); 
   		    $(this).addClass('active');
   		    $('.panel.active').removeClass('active'); 
   		    $('.guest-list-container').addClass('active'); 
-  		  } } }, 'Guest List'],
+  		  } } }, 'Listeners'],
   		  ['li.activityLog', {event: {click: function(){ 
   		    $(this).siblings().removeClass('active'); 
   		    $(this).addClass('active');
   		    $('.panel.active').removeClass('active'); 
   		    $('.activity-log-container').addClass('active'); 
-  		  } } }, 'Activity Log'],
+  		  } } }, 'Log'],
+  		  ['li.settings', {event: {click: function(){ 
+  		    $(this).siblings().removeClass('active'); 
+  		    $(this).addClass('active');
+  		    $('.panel.active').removeClass('active'); 
+  		    $('.settings-container').addClass('active'); 
+  		  } } }, 'Settings'],
   		];
   		$('.bottom-bar').append(util.buildTree(panelButtons));
   		
@@ -193,9 +199,72 @@
         'div.activity-log-container.panel', 
           ['div.title', 'Activity Log'],
           ['ul#activityLog', '']
-      ]
+      ];
       $('#right-panel').append(util.buildTree(activityLog))
-  		
+
+      // Create Settings Panel
+      var settingsPanel = function(a,b) {
+        var notifyLabels = [
+          'When someone I fanned starts DJing',
+          'When someone becomes a fan of me',
+          'About new features, news, etc',
+          'At random times with pieces of pi',
+        ];
+        var facebookLabels = [
+          'When I awesome in public rooms',
+          'When I join a public room',
+          'When I DJ in a public room'
+        ];
+        var notifyContent = [], 
+            facebookContent=[];
+        $(a).each(function(i) {
+          notifyContent.push([
+            'div.option',
+            ['input', {type: 'checkbox', name: $(this).attr('name'), id: $(this).attr('name'), checked: $(this).attr('checked') }],
+            ['label', {for: $(this).attr('name')}, notifyLabels[i]]
+          ])
+        })
+        notifyContent.splice(0,0,['div.sectionTitle', 'Email me..'])
+        notifyContent.splice(0,0,'div.section')
+
+        $(b).each(function(i) {
+          facebookContent.push([
+            'div.option',
+            ['input', {type: 'checkbox', name: $(this).attr('name'), id: $(this).attr('name'), checked: $(this).attr('checked') }],
+            ['label', {for: $(this).attr('name')}, facebookLabels[i]]
+          ])
+        })
+        facebookContent.splice(0,0,['div.sectionTitle', 'Publish to Facebook..'])
+        facebookContent.splice(0,0,'div.section')
+
+        return [
+          'div.content', 
+          [
+            'form#emailSettings', 
+            {event: {submit: function(){
+          		$.post('/settings', $(this).serialize(), function() {
+          		  tt.room.showRoomTip('Settings saved..', 2);
+          		});
+          		return false;
+            }} },
+            notifyContent,
+            facebookContent,
+            ['button', {type: 'submit'}, 'Save Settings']
+          ]
+        ]
+      };
+      $('#right-panel').append(util.buildTree([
+        'div.settings-container.panel',
+          ['div.title', 'Settings']
+      ]))                
+      getSettings = function() { return $.get('/settings') }
+			$.when(getSettings()).then(function(a) {
+        var c = $(a).find('input[name*=notify]')
+        var b = $(a).find('input[name*=facebook]')
+        $('.settings-container').append(util.buildTree(settingsPanel(c,b)));
+
+			})	
+			
   		// Set Active Panel and Panel Button
   		$('.guest-list-container, .panelButtons .guestList').addClass('active');
       // Overwrite setPage method
@@ -345,9 +414,11 @@
       $('.songlog-container .panel .songlog').css({height: roomHeight-39-25-150});    // Songlog Element
       $('.activity-log-container').css({height: roomHeight-39-150});                  // Activity Log Container
       $('.activity-log-container #activityLog').css({height: roomHeight-39-25-150});  // Songlog Panel Element
-      $('.chat-container').css({height: roomHeight*.4});  // Songlog Panel Element
-      $('.chat-container .messages').css({height: roomHeight*.4-38-25});  // Songlog Panel Element
-      $('.chat-container .chatHeader').css({bottom: roomHeight*.4-25});  // Songlog Panel Element
+      $('.settings-container').css({height: roomHeight-39-150});                      // Settings Container
+      $('.settings-container .content').css({height: roomHeight-39-150-25});          // Settings Content Element
+      $('.chat-container').css({height: roomHeight*.4});                              // Chat Container
+      $('.chat-container .messages').css({height: roomHeight*.4-38-25});              // Chat Messages Element
+      $('.chat-container .chatHeader').css({bottom: roomHeight*.4-25});               // Chat Header Element
   
           
       // Reposition
@@ -456,6 +527,11 @@
           } else { // Playlist data
           }
         }
+        if (b.rooms) {
+          if ($this.lastDirectoryGraph) { console.log((Date.now()-$this.lastDirectoryGraph)/1000) }
+          $this.lastDirectoryGraph = Date.now();
+          console.log('Directory Graph: ', b);
+        }
         if (b.room&&!b.command) {
           var users = b.users;
           $this.currentSong = new CurrentSong();
@@ -514,6 +590,9 @@
         for (i in votes) {
           var activity = ['li', ((turntable.room.users[votes[i][0]]&&turntable.room.users[votes[i][0]].name)||'Anonymous user')+' voted '+votes[i][1]+'.'];
           $('#activityLog').prepend(util.buildTree(activity));
+          if (votes[i][1]=='up'&&tt.room.downvoters.indexOf(votes[i][0])>=0) {
+            
+          }
         }
         $this.currentSong.set({
           upvotes: room.upvotes,
@@ -587,6 +666,7 @@
       this.bind('change:downvotes', function(m, a) { $('#downvotes').html(a); });
       this.bind('change:queues', function(m, a) { $('#queues').html(a); });
       $('#upvotes, #downvotes, #queues').html(0);
+      tt.room.downvoters = [];
     },
     snag: function(a) {
       var activity = ['li', tt.room.users[a.userid].name+' queued the song.'];
