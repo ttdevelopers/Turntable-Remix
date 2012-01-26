@@ -1,5 +1,5 @@
 (function(window, undefined) {
-  var $this;
+  //var $this;
   versionCheck = function(a) {
     if (a.version!=$this.version) {
       var updateMessage = ['div', ['strong', 'Turntable Remix Update Available'], ['div', 'Your currently have version '+$this.version, ['br'], ['a', {href: 'http://github.com/overra/Turntable-Remix'}, 'Click here'], ' to get the latest version!', ['br'], ['br'], 'Clicking OK to ignore.']]
@@ -7,7 +7,7 @@
     }
   }
   var TT = Backbone.Model.extend({
-    version: '0.1.3',
+    version: '0.1.4',
     initialize: function() {
       $this = this;
       
@@ -147,8 +147,8 @@
           ['div#title.info', 'Title: ', ['span', (currentSong.song||'')]],
           ['div#bitrate.info', 'Bitrate: ', ['span', (currentSong)?(currentSong.bitrate||128)+'kbps':'']],
           ['div#listeners.count', this.listeners.length],
-          ['div#upvotes.count', {event:{click: upvoteClickEvent}}, this.currentSong.get('upvotes')],
-          ['div#downvotes.count', {event:{click: function() { $('#upvotes').removeClass('active'); $(this).addClass('active'); tt.room.manager.callback('downvote'); }}}, this.currentSong.get('downvotes')],
+          ['div#upvotes.count', {event:{click: upvoteClickEvent}}, (this.currentSong)?this.currentSong.get('upvotes'):0],
+          ['div#downvotes.count', {event:{click: function() { $('#upvotes').removeClass('active'); $(this).addClass('active'); tt.room.manager.callback('downvote'); }}}, (this.currentSong)?this.currentSong.get('downvotes'):0],
           ['div#queues.count', {event:{click: queueClickEvent}}, '0'],
       ];
 
@@ -271,6 +271,15 @@
       turntable.setPage = function(a,b) {
         window.location = '/'+ (a||b);
       }
+      
+      // Idletime format function
+      var formatIdletime = function(diff) { 
+        hour = (diff>=3600)?Math.floor(diff / 3600):'00';
+        minutes = (hour!='00')?Math.floor((diff-(hour*3600))/60):(diff>=60)?Math.floor(diff/60):'00';
+        seconds = diff - (((hour!='00')?hour*3600:0) + ((minutes!='00')?minutes*60:0)); 
+        return ((hour!='00')?hour+':':'')+((minutes.toString().length==2)?minutes:'0'+minutes)+':'+((seconds.toString().length==2)?seconds:'0'+seconds);
+      }
+      
       // Overwrite guest list name layout method
       Room.layouts.guestListName = function(b, f, c) {
         var a = "https://s3.amazonaws.com/static.turntable.fm/roommanager_assets/avatars/" + b.avatarid + "/scaled/55/headfront.png";
@@ -287,16 +296,32 @@
         for (i in uT) {
           uT[i] = ['div.'+uT[i]];
         }
+        var v = ((tt.room.downvoters.indexOf(b.userid)>=0)?'.downvoted':((tt.room.upvoters.indexOf(b.userid)>=0)?'.upvoted':''))
         uT.splice(0,0,'div.icons');
-
+        currentIdletime = $this.listeners.get(b.userid)&&moment().diff(moment($this.listeners.get(b.userid).get('lastActivity')), 'seconds');
         var g = uT;
-        return ["div"+ e, {
+        return ["div"+ e+v, {
           event: {
             mouseover: function() {
               $(this).find("div.guestArrow").show();
+              $(this).find('div.icons').css({opacity: 0});
+              var updateIdleDisplay = function(a,b){
+                var user = b;
+                if (!$this.listeners.get(user.userid)) {
+                  clearInterval(a.timer);
+                  return;
+                }
+                var idletime = moment().diff(moment($this.listeners.get(user.userid).get('lastActivity')), 'seconds');
+                $(a).find('div.idleTime').html(formatIdletime(idletime))
+              }
+              updateIdleDisplay(this,b);
+              this.timer = setInterval(updateIdleDisplay, 1000, this,b)
             },
             mouseout: function() {
               $(this).find("div.guestArrow").hide();
+              $(this).find('div.icons').css({opacity: 1});
+              $(this).find('div.idleTime').html('')
+              clearInterval(this.timer)
             },
             click: function() {
               var g = $(this).parent().find("div.guestOptionsContainer");
@@ -323,10 +348,13 @@
         {}, ["img",
         {
           src: a,
-          height: "20"
+          height: "20",
+          style: {
+            opacity: ((currentIdletime>300)?((currentIdletime>600)?((currentIdletime>900)?0.15:0.40):0.65):1)
+          }
         }]], ["div.guestName",
         {},
-        b.name], g, ["div.guestArrow"]];
+        b.name], g, ['div.idleTime'], ["div.guestArrow"]];
       }
       
       // Overwrite current Guest List sorting method
@@ -546,8 +574,12 @@
             })
           }
           votelog = b.room.metadata.votelog;
+          console.log(votelog)
           voterIds = _.pluck(votelog, '0');
           voterIndex = voterIds.indexOf(tt.user.id);
+          for (i in votelog) {
+            if (votelog[i][1]=='down'&&votelog[i][0]!='') { tt.room.downvoters.push(votelog[i][0]); }
+          }
           if (voterIndex>=0) {
             $this.currentSong.set({hasVoted: votelog[voterIndex][1]});
           }
@@ -588,16 +620,28 @@
         var votes = a.room.metadata.votelog;
         var room = a.room.metadata;      
         for (i in votes) {
+          var vuid = votes[i][0],
+              vdir = votes[i][1];
           var activity = ['li', ((turntable.room.users[votes[i][0]]&&turntable.room.users[votes[i][0]].name)||'Anonymous user')+' voted '+votes[i][1]+'.'];
           $('#activityLog').prepend(util.buildTree(activity));
-          if (votes[i][1]=='up'&&tt.room.downvoters.indexOf(votes[i][0])>=0) {
-            
+          if (vdir=='up'&&tt.room.downvoters.indexOf(vuid)>=0) {
+            tt.room.downvoters.splice(tt.room.downvoters.indexOf(vuid),1);
+          }
+          if (vdir=='down'&&vuid!='') {
+            tt.room.downvoters.push(vuid)
+          }
+          if (vuid!='') { 
+            $this.listeners.get(vuid).set({lastActivity: Date.now()})
           }
         }
+        tt.room.updateGuestList();
         $this.currentSong.set({
           upvotes: room.upvotes,
           downvotes: room.downvotes
         })
+      },
+      speak: function(a) {
+        $this.listeners.get(a.userid).set({lastActivity: Date.now()})
       },
       update_user: function(a) {
         var activity;
@@ -642,7 +686,7 @@
   });
   var Listener = Backbone.Model.extend({
     initialize: function() {
-      this.lastActivity = Date.now();
+      this.set({lastActivity: Date.now()});
     }
   });
   var CurrentSong = Backbone.Model.extend({

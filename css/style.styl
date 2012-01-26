@@ -239,7 +239,10 @@ body
             user-select: text
             -webkit-user-select: text
             .message
-              width: 588px
+              background: transparent
+              width: 578px
+              &:nth-child(even)
+                background: rgba(0,0,0,.1)
           .chatBar
             barGradient()
             border-top: 0
@@ -298,11 +301,17 @@ body
               font-weight: 100
               text-shadow: 0px 1px rgba(0,0,0,.5)
               
+              &.upvoted
+                background-image: -webkit-linear-gradient(left, rgba(0,130,0,.3), rgba(0,130,0,0)) !important
+              &.downvoted
+                background-image: -webkit-linear-gradient(left, rgba(130,0,0,.3), rgba(130,0,0,0)) !important
+              .idleTime                
               .icons
                 display: inline-block
                 height: 28px
                 position: absolute
                 right: 28px
+                text-align: right
                 width: 100px
                 
                 div
@@ -329,11 +338,11 @@ body
                   margin-top: 9px
                   width: 13px
               &:hover
-                background: transparent
+                background-color: transparent
               &:nth-child(even)
-                background: rgba(0,0,0,.1)
+                background-color: rgba(0,0,0,.1)
               &.selected
-                background: rgba(0,0,0,.5)
+                background-color: rgba(0,0,0,.5)
 
           .chatBar
             display: none
@@ -588,12 +597,14 @@ textarea:focus
 .mute_btn
   z-index: 999999
 ::-webkit-scrollbar  
-    background-color: transparent
+    background-color: #202020
+    box-shadow: inset 2px 0px 5px -3px #000
     position: absolute
-    width: 3px
+    width: 10px
 ::-webkit-scrollbar-track
 ::-webkit-scrollbar-track-piece
-    background-color: transparent
+    background-color: #202020
 ::-webkit-scrollbar-thumb
-  background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(255,200,0,1) 0%, rgba(255,200,0,1) 100%, rgba(0,0,0,0) 100%)
-  border-radius: 2px
+  background: #fc0
+  box-shadow: inset 2px 0px 5px -3px #000
+  

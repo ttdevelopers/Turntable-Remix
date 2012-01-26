@@ -273,7 +273,11 @@ body .loading li:nth-child(n+2) {
   -webkit-user-select: text;
 }
 #maindiv #outer .roomView #right-panel .chat-container .messages .message {
-  width: 588px;
+  background: transparent;
+  width: 578px;
+}
+#maindiv #outer .roomView #right-panel .chat-container .messages .message:nth-child(even) {
+  background: rgba(0,0,0,0.10);
 }
 #maindiv #outer .roomView #right-panel .chat-container .chatBar {
   background: -webkit-linear-gradient(rgba(255,255,255,0.10), rgba(255,255,255,0.00)) #404040;
@@ -340,35 +344,48 @@ body .loading li:nth-child(n+2) {
   font-weight: 100;
   text-shadow: 0px 1px rgba(0,0,0,0.50);
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest.upvoted {
+  background-image: -webkit-linear-gradient(left, rgba(0,130,0,0.30), rgba(0,130,0,0.00)) !important;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest.downvoted {
+  background-image: -webkit-linear-gradient(left, rgba(130,0,0,0.30), rgba(130,0,0,0.00)) !important;
+}
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .idleTime,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons {
   display: inline-block;
   height: 28px;
   position: absolute;
   right: 28px;
+  text-align: right;
   width: 100px;
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .idleTime div,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons div {
   float: right;
   margin: 0px 3px;
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .idleTime .fan,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .fan {
   background: url("http://i.imgur.com/qlymb.png");
   height: 14px;
   margin-top: 6px;
   width: 15px;
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .idleTime .mod,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .mod {
   background: url("http://static.turntable.fm.s3.amazonaws.com/images/room/mod_icon.png");
   height: 14px;
   margin-top: 7px;
   width: 12px;
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .idleTime .superuser,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .superuser {
   background: url("http://static.turntable.fm.s3.amazonaws.com/images/room/superuser_icon.png");
   height: 15px;
   margin-top: 7px;
   width: 15px;
 }
+#maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .idleTime .dj,
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest .icons .dj {
   background: url("http://i.imgur.com/cE9h5.png");
   height: 11px;
@@ -376,13 +393,13 @@ body .loading li:nth-child(n+2) {
   width: 13px;
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest:hover {
-  background: transparent;
+  background-color: transparent;
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest:nth-child(even) {
-  background: rgba(0,0,0,0.10);
+  background-color: rgba(0,0,0,0.10);
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .guests .guest.selected {
-  background: rgba(0,0,0,0.50);
+  background-color: rgba(0,0,0,0.50);
 }
 #maindiv #outer .roomView #right-panel .guest-list-container .chatBar {
   display: none;
@@ -675,15 +692,16 @@ textarea:focus {
   z-index: 999999;
 }
 ::-webkit-scrollbar {
-  background-color: transparent;
+  background-color: #202020;
+  box-shadow: inset 2px 0px 5px -3px #000;
   position: absolute;
-  width: 3px;
+  width: 10px;
 }
 ::-webkit-scrollbar-track,
 ::-webkit-scrollbar-track-piece {
-  background-color: transparent;
+  background-color: #202020;
 }
 ::-webkit-scrollbar-thumb {
-  background: -webkit-linear-gradient(top, rgba(0,0,0,0.00) 0%, #ffc800 0%, #ffc800 100%, rgba(0,0,0,0.00) 100%);
-  border-radius: 2px;
+  background: #fc0;
+  box-shadow: inset 2px 0px 5px -3px #000;
 }

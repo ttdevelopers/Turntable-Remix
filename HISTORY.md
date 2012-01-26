@@ -1,4 +1,12 @@
 ##Latest Changes##
+**01.25.12**
+
+* Widened scrollbars
+* Added idletimes which are displayed when hovering over a user in the guest list
+* Avatars in guest list lower to 65% opacity at 5mins idle, 40% at 10mins and 15% at 15mins or greater
+* Users are now highlighted red or green in the guest list to indicate their vote
+* Fixed loading issues.
+ 
 **01.24.12**
 
 * Redesigned Panel Buttons
