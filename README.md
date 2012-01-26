@@ -5,7 +5,8 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 
 ###Easy install###
 If you've previously installed from source, make sure that copy is uninstalled.  
-The easy install will only overwrite older versions installed via the easy install.
+The easy install will only overwrite older versions installed via the easy install.  
+
 1. [Install Turntable Remix](http://turntableremix.com/Turntable-Remix-0.1.4.crx)
 2. Load a turntable room..
 
