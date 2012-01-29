@@ -7,7 +7,7 @@
     }
   }
   var TT = Backbone.Model.extend({
-    version: '0.1.4',
+    version: '0.1.5',
     initialize: function() {
       $this = this;
       
