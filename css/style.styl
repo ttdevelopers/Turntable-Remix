@@ -159,7 +159,10 @@ body
             #listeners
               background: url(https://s3.amazonaws.com/static.turntable.fm/images/index/buddy_list_friend_icon.png) 7px 5px no-repeat #404040
             #upvotes
-              background: url(http://i.imgur.com/WuaW6.png) 8px 3px no-repeat #404040
+              background-color:  #404040
+              background-image: url(unquote('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACYSURBVHjaYvj//z8DJZgh/Fw6PhwVfi69Ap8afJrNws+lfws/l/4//Fy6H6kGSIefS38F1fwfapAusQZwhp9Lv4SkGYafhJ9LFyVkAHP4ufSNWDTD8Mnwc+ls+Axox6MZhpfiMiCWCM0wXIFugE34ufSfJBgAjxmG8HPpimghTiz+Fn4uXRdXNH7AoYmf2HQwogygNDsDBgAM9xtoWm+cMQAAAABJRU5ErkJggg=='))
+              background-position: 8px 3px 
+              background-repeat: no-repeat
               cursor: pointer
               &.active
                 background-color: rgba(0,255,0,.2)
@@ -167,7 +170,10 @@ body
               &.auto
                 box-shadow: 0px 0px 10px rgba(0,255,0,0.70), inset 0px 0px 3px rgba(0,255,0,1)
             #downvotes
-              background: url(http://i.imgur.com/SQren.png) 8px 3px no-repeat #404040
+              background-color: #404040
+              background-image: url(unquote('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAACUSURBVHjaYvj//z8DJZjhiZ8fNvzhiZ/ffyyYH13tqAEQA1Se+Pm9xaEBH/72xM/PDGaS0xM/v58kGhCO7oVMEjQ34gqDCURoXo0vEJmf+Pltx6P5zBM/P05CscD/xM/vEhbNT574+UkTG40qT/z8XqGHODa1uAxgeOLnZ48UM+G41OEzgOGJn18CcohjNYDS7AwYAKDuEXj6aStmAAAAAElFTkSuQmCC'))
+              background-position: 8px 3px 
+              background-repeat: no-repeat
               cursor: pointer
               &.active
                 background-color: rgba(255,0,0,.2)
@@ -318,7 +324,7 @@ body
                   float: right
                   margin: 0px 3px
                 .fan
-                  background: url(http://i.imgur.com/qlymb.png)
+                  background-image: url(unquote('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAOCAYAAADwikbvAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAF7SURBVHjanJK/S0JRHMXv2toaNDX1B/QHnOcbRNH3SPDxoE0EUZdWdRMCoRQEN+lrPx41FBjRkxoqI0LU7IdDEREJEf0VpyGNDI1qOHA5nHPuhftRJNV/9XkQQBdgV4CWAEUBZvv+tABLfX9VgLmhsgC5HcvineOw57rslEp0/H4KENv0+djM59lzXd6Wy9y1bQqQJamUALPbpsm3oyPeZzLsJpN8zOX4XK3S8fvZ29/nU6HAbjLJh2yWrwcHg+EZJUDxMp9nx7bZDoU+1U0k+FKrsRuPD/lXCwtsraxQgGUlQOs6nR4KDHQTjY70O6kUBThTAjQakcjI0Dg1olEKcKIESB1a1p/KNcuiAItKgMmKpvE0GPxV8TgQ4JrHQwEmBl9lVjSNrs/H1phSc36ee14v+yzo3yGZEqCwpeu8MM2h4rlp0tF1CpAbSdiXkcUNXWfdMNgOhVg3jMEzY2Px/DYQXvd4WDcMrn/cGP6R7REDdkXTKIA9LvM+ABmRCsH6QCneAAAAAElFTkSuQmCC'))
                   height: 14px
                   margin-top: 6px
                   width: 15px
@@ -333,7 +339,7 @@ body
                   margin-top: 7px
                   width: 15px
                 .dj
-                  background: url(http://i.imgur.com/cE9h5.png)
+                  background-image: url(unquote('data:image/png;base64,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'))
                   height:11px
                   margin-top: 9px
                   width: 13px
@@ -346,6 +352,54 @@ body
 
           .chatBar
             display: none
+        .buddylist-container
+          background: -webkit-linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.1)) #404040
+          bottom: 39px
+          height: 200px
+          overflow: auto
+          position: absolute
+          right: 0px
+          width: 250px
+          ul
+            font-size: 10pt
+            list-style-type: none
+            text-align: left
+            li
+              overflow: hidden
+              padding: 3px 5px
+              text-overflow: ellipsis
+              white-space: nowrap
+          .room
+            background: rgba(0,0,0,.1)
+            color: rgba(255,255,255,.8)
+            font-weight: bold
+            text-shadow: 0px 1px rgba(0,0,0,.5)
+          .available
+            color: rgba(255,255,255,.8)
+            padding-left: 20px
+            &:before
+              background-color: #0c0
+              border-radius: 2px;
+              content: ''
+              display: block
+              height: 4px
+              left: 9px
+              margin-top: 5px
+              position: absolute
+              width: 4px
+          .away
+            color: rgba(255,255,255,.5)
+            padding-left: 20px
+            &:before
+              background-color: #c00
+              border-radius: 2px;
+              content: ''
+              display: block
+              height: 4px
+              left: 9px
+              margin-top: 5px
+              position: absolute
+              width: 4px
         .songlog-container
           right: 0
           top: 150px
@@ -406,9 +460,17 @@ body
                 padding: 0 0 0 32px
               .songlog
                 background: #404040
-                color: #fff
+                color: #fc0
                 .song
                   box-shadow: inset 0px 1px rgba(255,255,255,.1), inset 0px -1px rgba(0,0,0,.1)
+                  .scorebad
+                    color: #f00
+                    text-shadow: 0px 1px 1px rgba(0,0,0,.1)
+                  .scoregood
+                    color: #0b0
+                    text-shadow: 0px 1px 1px rgba(0,0,0,.1)
+                  .title
+                    color: #fff
                 .song2
                   background: rgba(0,0,0,.1)
                 .title

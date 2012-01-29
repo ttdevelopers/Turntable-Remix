@@ -146,7 +146,7 @@
           ['div#artist.info', 'Artist: ', ['span', (currentSong.artist||'')]],
           ['div#title.info', 'Title: ', ['span', (currentSong.song||'')]],
           ['div#bitrate.info', 'Bitrate: ', ['span', (currentSong)?(currentSong.bitrate||128)+'kbps':'']],
-          ['div#listeners.count', this.listeners.length],
+          ['div#listeners.count', {event: {click: function() { $('.panelButtons li').removeClass('active'); $('.panelButtons .guestList').addClass('active'); $('.panel.active').removeClass('active'); $('.guest-list-container').addClass('active');  }}}, this.listeners.length],
           ['div#upvotes.count', {event:{click: upvoteClickEvent}}, (this.currentSong)?this.currentSong.get('upvotes'):0],
           ['div#downvotes.count', {event:{click: function() { $('#upvotes').removeClass('active'); $(this).addClass('active'); tt.room.manager.callback('downvote'); }}}, (this.currentSong)?this.currentSong.get('downvotes'):0],
           ['div#queues.count', {event:{click: queueClickEvent}}, '0'],
@@ -154,7 +154,7 @@
 
       $('.info-container').append(util.buildTree(currentSong));
 
-      var hasVoted = this.currentSong.get('hasVoted');
+      if (this.currentSong) { var hasVoted = this.currentSong.get('hasVoted'); }
       if (hasVoted) { $('#'+hasVoted+'votes').addClass('active'); }
       
       
@@ -193,6 +193,9 @@
   		  } } }, 'Settings'],
   		];
   		$('.bottom-bar').append(util.buildTree(panelButtons));
+  		
+  		// Create Buddylist Container
+  		//$('<div class="buddylist-container">').insertBefore('.chat-container .chatBar');
   		
       // Create Activity Log
       var activityLog = [
@@ -406,7 +409,7 @@
         this.updateGuestListMenu();
       }	
       tt.room.updateGuestList()
-  
+      //tt.api({api:'room.directory_graph'})
       // Initial resize
       this.resize();
       
@@ -446,6 +449,7 @@
       $('.settings-container .content').css({height: roomHeight-39-150-25});          // Settings Content Element
       $('.chat-container').css({height: roomHeight*.4});                              // Chat Container
       $('.chat-container .messages').css({height: roomHeight*.4-38-25});              // Chat Messages Element
+      //$('.buddylist-container').css({height: roomHeight*.4-38-25});                 	// Buddylist Container
       $('.chat-container .chatHeader').css({bottom: roomHeight*.4-25});               // Chat Header Element
   
           
@@ -542,7 +546,6 @@
   		// Reset Speaker State
   		tt.room.manager.speaker.state('off')
   		tt.room.manager.speaker.state('on')
-  
     },
     events: {
       received: function(a) {
@@ -556,9 +559,20 @@
           }
         }
         if (b.rooms) {
-          if ($this.lastDirectoryGraph) { console.log((Date.now()-$this.lastDirectoryGraph)/1000) }
-          $this.lastDirectoryGraph = Date.now();
-          console.log('Directory Graph: ', b);
+          var listTree=[]; 
+          for (i in b.rooms) { 
+            room = b.rooms[i]; 
+            userTree = []; 
+            if (room[1].length>0) { 
+              for (j in room[1]) { 
+                userTree.push(['li.'+room[1][j].status, room[1][j].name]); 
+              } 
+              userTree.splice(0,0,['li.room', room[0].name]); 
+              listTree=listTree.concat(userTree); 
+            } 
+          } 
+          listTree.splice(0,0,'ul'); 
+          //$('.buddylist-container').html(util.buildTree(listTree));   
         }
         if (b.room&&!b.command) {
           var users = b.users;
@@ -573,6 +587,7 @@
               downvotes: b.room.metadata.downvotes
             })
           }
+          tt.room.downvoters=[];
           votelog = b.room.metadata.votelog;
           console.log(votelog)
           voterIds = _.pluck(votelog, '0');
@@ -594,6 +609,7 @@
         var activity = ['li', {title: currentSong.song+' by '+currentSong.artist}, turntable.room.users[a.room.metadata.current_dj].name+' started playing '+currentSong.song+' by '+currentSong.artist+'.']
         $('.count').removeClass('active');
         $('#activityLog').prepend(util.buildTree(activity))     
+        tt.room.downvoters=[];
         if ($this.autoAwesome) { 
           tt.room.manager.callback('upvote'); 
           $('#upvotes').addClass('active');
@@ -710,7 +726,7 @@
       this.bind('change:downvotes', function(m, a) { $('#downvotes').html(a); });
       this.bind('change:queues', function(m, a) { $('#queues').html(a); });
       $('#upvotes, #downvotes, #queues').html(0);
-      tt.room.downvoters = [];
+      //tt.room.downvoters = [];
     },
     snag: function(a) {
       var activity = ['li', tt.room.users[a.userid].name+' queued the song.'];
