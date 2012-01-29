@@ -3,7 +3,7 @@ Turntable Remix is currently only available for Chrome, however a port to Firefo
 
 I'm currently in the process of rewriting the base of Remix as the current version was a rewrite done in a day, needless to say things came out really sloppy which lead to stupid bugs and inefficiency. Thank you all for the motivation to continue and make Remix better altogether.
 
-Hopefully this update fixes the loading issues. If you continue having problems or have something to say you can reach me on AIM or GTalk at overra@gmail.com
+Hopefully this update fixes the loading issues. If you continue having problems or have something to say you can reach me at overra@gmail.com on AIM or GTalk or [@overra](http://twitter.com/overra) on twitter.
 
 ##Installation##
 
@@ -24,6 +24,7 @@ The easy install will only overwrite older versions installed via the easy insta
 ##[Latest Changes](https://github.com/overra/Turntable-Remix/blob/master/HISTORY.md)##
 
 **01.28.12**
+
 * No longer referencing to images from imgur
 * Started on buddy/friend list; disabled for now
 * Possible loading fix.

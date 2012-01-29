@@ -1,5 +1,6 @@
 ##Latest Changes##
 **01.28.12**
+
 * No longer referencing to images from imgur
 * Started on buddy/friend list; disabled for now
 * Possible loading fix.
