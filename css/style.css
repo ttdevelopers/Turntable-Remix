@@ -764,6 +764,16 @@ textarea:focus {
 .mute_btn {
   z-index: 999999;
 }
+.marker {
+background-color: #c9ddff!important;
+color: #000000;
+border-style: solid!important;
+border-top-width: 0!important;
+border-right-width: 0!important;
+border-bottom-width: 1px!important;
+border-left-width: 0!important;
+border-color: #0015ff!important;
+}
 ::-webkit-scrollbar {
   background-color: #202020;
   box-shadow: inset 2px 0px 5px -3px #000;
