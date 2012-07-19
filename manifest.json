@@ -1,6 +1,6 @@
 {
   "name": "Turntable.fm Remix",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": " turntable.fm",
   "content_scripts": [
     {
@@ -20,7 +20,7 @@
     }
   ],
   "permissions": [
-    "http://turntable.fm*",
+    "http://turntable.fm/*",
     "http://turntable.fm/",
     "https://turntable.fm/",
     "notifications"

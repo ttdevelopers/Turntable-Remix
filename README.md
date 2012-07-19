@@ -52,4 +52,3 @@ The easy install will only overwrite older versions installed via the easy insta
 
 ##Latest Screenshot##
 ![Latest Screenshot](http://i.imgur.com/zxQ6k.jpg)
-
