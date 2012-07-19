@@ -134,6 +134,10 @@
                $(remix.nodes.album).text(song.get('metadata').album);
                $(remix.nodes.bitrate).text((song.get('metadata').bitrate||128)+'kbps');
                $('.upvotes, .downvotes, .queues').text(0).removeClass('active');
+               if (remix.autobop) {
+                   $(window).focus();
+                   turntable.room.manager.callback('upvote');
+               }
             }
         });
         
