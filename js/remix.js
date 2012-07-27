@@ -13,10 +13,77 @@
             this.nodes = {};
             this.pendingActions = {};
             
+            if (util.getSetting('autoAwesome')===null) { 
+                util.setSetting('autoAwesome', 'off'); 
+            }
+            
             var keys = Object.keys(turntable);
             turntable.api = turntable[keys[keys.indexOf('getHashedAddr') + 1]];
             
             turntable.socket.on('message', this.messageListener.bind(this));
+
+            this.overwriteAnimations = function () {
+                turntable.room.manager.update_vote = function(user, vote) {
+                    var listener = turntable.room.manager.listeners[user.userid];
+                    if (listener) {
+                        var userHead = $(listener.body()).find('.headback'); 
+                        if (vote=='up') {
+                            userHead.addClass('rock');
+                        }
+                        else {
+                            userHead.removeClass('rock');
+                        }
+                        return;
+                    }
+                    var dj = turntable.room.manager.djs_uid[user.userid];
+                    if (dj) {
+                        var userHead = $(dj[0].body()).find('.headfront'); 
+                        if (vote=='up') {
+                            userHead.addClass('rock');
+                        }
+                        else {
+                            userHead.removeClass('rock');
+                        }
+                        return;
+                    }
+                };
+                var userid;
+                var userHead;
+                for (var i in turntable.room.upvoters) {
+                    userid = turntable.room.upvoters[i];
+                    (turntable.room.manager.listeners[userid]||turntable.room.manager.djs_uid[userid][0]).stop();
+                    turntable.room.manager.update_vote({userid: userid}, 'up');
+                }
+            };
+            
+            this.overwriteGuestList = function () {
+                turntable.room.updateGuestList = function () {
+                    var b = [],
+                        g = $(".guest-list-container .guests");
+                    b = _.sortBy(turntable.room.users, function(user, userid) {
+                        var rank = '3';
+                        if (user.fanof) {
+                            rank = 2;
+                        } 
+                        if (turntable.room.moderators.indexOf(userid)>=0) {
+                            rank = 1;
+                        }
+                        if (user.acl>0) { 
+                            rank = 0; 
+                        }
+                        return rank + user.name.toLowerCase();
+                    });
+                    var c = g.find(".guest.selected").data("id");
+                    g.find(".guest").remove();
+                    for (var e = 0, a = b.length; e < a; e++) {
+                        var d = (c && c == b[e].userid) ? true : false;
+                        g.append(util.buildTree(remix.room.layouts.guestListName(b[e], this, d)));
+                    }
+                    $("span#totalUsers").text(b.length);
+                    this.updateGuestListMenu();
+                };
+                turntable.room.updateGuestList();
+            };
 
             this.load = load = function () {
                 if (!turntable.hasOwnProperty('room')) {
@@ -36,6 +103,8 @@
                             if (turntable.room.currentSong) {
                                 this.room.songs.add(new Song(turntable.room.currentSong));
                                 this.room.applyTooltips();
+                               // this.overwriteAnimations();
+                               this.overwriteGuestList();
                             }
                         }
                     }
@@ -56,18 +125,43 @@
             
             if (data.command!==undefined) {
                 if (this.events.hasOwnProperty(data.command)) {
-                    return this.events[data.command].bind(this)(data);
+                    this.events[data.command].bind(this)(data);
                 }
-                console.log(data.command, data);
+                if (this.room.layouts.activities.hasOwnProperty(data.command)) {
+                    var activity = this.room.layouts.activities[data.command](data);
+                    if (activity) {
+                        $(remix.nodes.activities).prepend(util.buildTree(activity)).children(':first');
+                        if (activity[0].scrollWidth > 300) {
+                            activity.addClass('oversized');
+                        }
+                    }
+                    else {
+                        console.log(data.command, data);
+                    }
+                }
             }
             else if (data.hasOwnProperty('list')) {
-                this.room.updateSongCount();
+                setTimeout(this.room.updateSongCount, 250);
             }
             else if (data.hasOwnProperty('room') && data.hasOwnProperty('users')) {
                 console.log('Room info: %o', data);
-                setTimeout(function (metadata) {
-                    this.room.songs.currentSong.updateVotes(metadata);
-                }.bind(this), 250, data.room.metadata);
+                turntable.room.upvoters = [];
+                for (i in data.room.metadata.votelog) {
+                    if (data.room.metadata.votelog[i][1]=='up') {
+                        if (data.room.metadata.votelog[i][0]==turntable.user.id) {
+                            setTimeout(function() { // Eventually remove all these setTimeouts and push to "todoWhenLoaded"
+                                $('.upvotes').addClass('active');
+                            }, 250);
+                        }
+                        turntable.room.upvoters.push(data.room.metadata.votelog[i][0]);
+                    }
+                }
+                setTimeout(function (d) {
+                    this.room.songs.currentSong.updateVotes(d.room.metadata);
+                    for (var i = 0; i<d.users.length; i++) {
+                        this.room.users.add(new User(d.users[i]));
+                    }
+                }.bind(this), 250, data);
             }
             else if (data.msgid) {
                 if (this.pendingActions.hasOwnProperty(data.msgid)) {
@@ -89,21 +183,22 @@
         
         Remix.prototype.events = {
             'newsong': function (data) {
-                console.log('new song', data.room.metadata.current_song);
                 this.room.songs.add(new Song(data.room.metadata.current_song));
             }, 
             'registered': function (data) {
-                console.log('user joined', data, this);
                 this.room.users.add(new User(data.user[0]));
             }, 
             'playlist_complete': function (data) {
                 this.room.updateSongCount();
             }, 
             'snagged': function (data) {
-                console.log(data);
                 this.room.songs.currentSong.updateQueues();
             }, 
             'update_votes': function (data) {
+                if (data.room.metadata.votelog[0][0]==turntable.user.id) {
+                    $('.upvotes').addClass('active');
+                    $('.downvotes').removeClass('active');
+                }
                 this.room.songs.currentSong.updateVotes(data.room.metadata);
             }
         };
@@ -129,14 +224,27 @@
             }, 
             updateNowPlaying: function (song, songs) {
                this.currentSong = song;
-               $(remix.nodes.artist).text(song.get('metadata').artist);
-               $(remix.nodes.title).text(song.get('metadata').song);
-               $(remix.nodes.album).text(song.get('metadata').album);
-               $(remix.nodes.bitrate).text((song.get('metadata').bitrate||128)+'kbps');
+
+               var artist = song.get('metadata').artist, 
+               title = song.get('metadata').song, 
+               coverart = 'url('+(song.get('metadata').coverart||'https://s3.amazonaws.com/static.turntable.fm/images/room/record.png')+')' , 
+               bitrate = (song.get('metadata').bitrate||128)+'kbps';
+               
+               $(remix.nodes.artist).text(artist).attr('title', artist);
+               $(remix.nodes.title).text(title).attr('title', title);
+               $(remix.nodes.coverart).css('background-image', coverart);
+               $(remix.nodes.coverartGlow).css('background-image', coverart);
+               $(remix.nodes.bitrate).text(bitrate).attr('title', bitrate);
+               
                $('.upvotes, .downvotes, .queues').text(0).removeClass('active');
-               if (remix.autobop) {
-                   $(window).focus();
-                   turntable.room.manager.callback('upvote');
+               
+               $('.headback, .headfront').removeClass('rock');
+               
+               if (util.getSetting('autoAwesome')=='on') {
+                   setTimeout(function() {
+                       $(window).focus();
+                       turntable.room.manager.callback('upvote');
+                    }, Math.round(Math.random()*30000));
                }
             }
         });
@@ -170,7 +278,9 @@
         Users = Backbone.Collection.extend({
             model: User, 
             initialize: function () {
-                
+                this.on('add', function(user) {
+                    user.set('id', user.get('userid'));
+                });
             }
         });
         
@@ -194,7 +304,7 @@
                 $('#right-panel').
                     append(util.buildTree(this.layouts.settingsPanel()));
                 $('#right-panel').
-                    append(util.buildTree(this.layouts.activityPanel));
+                    append(util.buildTree(this.layouts.activityPanel, remix.nodes));
                 $('.guest-list-container').addClass('active');
                 $('.guest-list-container, #buddyListContainer,' +
                   '#room-info-tab, .playlist-container').addClass('pane');
@@ -204,11 +314,6 @@
                 $('body').append(util.buildTree(this.layouts.nowPlaying.bind(this)(), remix.nodes));
             }, 
             upvote: function () {
-                if ($('.upvotes').hasClass('active')) {
-                    remix.autobop = true;
-                    $('.upvotes').addClass('auto');
-                    return;
-                }
                 remix.verifyAction(turntable.messageId, 'upvote');
                 turntable.room.manager.callback('upvote');
             }, 
@@ -243,6 +348,79 @@
                         ['ul#activity##activities', {}, '']
                     ]
                 ], 
+                'activities': {
+                    'newsong': function(d) {
+                        var md = d.room.metadata.current_song,
+                            song = md.metadata;
+                        return ['li', {}, md.djname + ' started playing "' + song.song + '" by ' + song.artist + '.'];
+                    }, 
+                    'registered': function(d) {
+                        var user = d.user[0];
+                        return ['li', {}, user.name + ' joined the room.'];
+                    }, 
+                    'deregistered': function(d) {
+                        var user = d.user[0];
+                        return ['li', {}, user.name + ' left the room.'];
+                    }, 
+                    'update_user': function(d) {
+                        var user = remix.room.users.get(d.userid).get('name');
+                        if (d.hasOwnProperty('fans')) {
+                            return ['li', {}, user + ' '+ ((d.fans == 1)?'gained':'lost') +' a fan.'];
+                        }
+                        else if (d.hasOwnProperty('avatarid')) {
+                            return ['li', {}, user + ' changed avatars.'];
+                        }
+                        else if (d.hasOwnProperty('name')) {
+                            if (d.name!=user) {
+                                remix.room.users.get(d.userid).set({name: d.name});
+                                return ['li', {}, user + ' is now known as ' + d.name + '.'];
+                            }
+                            return ['li', {}, user + ' modified their profile.'];
+                        }
+                    }, 
+                    'update_votes': function(d) {
+                        var vote = d.room.metadata.votelog[0];
+                        if (vote[0]) {
+                            var user = remix.room.users.get(vote[0]).get('name');
+                            return  ['li', {}, user + ' ' + vote[1] + 'voted.'];
+                        }
+                        else {
+                            return ['li', {}, 'Anonymous user downvoted.'];
+                        }
+                    }, 
+                    'add_dj': function(d) {
+                        var user = remix.room.users.get(d.user[0].userid).get('name');
+                        return ['li', {}, user + ' became a DJ.'];
+                    }, 
+                    'rem_dj': function(d) {
+                        var user = remix.room.users.get(d.user[0].userid).get('name');
+                        if (d.modid) {
+                            var mod = remix.room.users.get(d.modid).get('name');
+                            return ['li', {}, mod + ' escorted ' + user + ' off the deck.'];
+                        }
+                        return ['li', {}, user + ' is no longer DJing.'];
+                    }, 
+                    'new_moderator': function(d) {
+                        var user = remix.room.users.get(d.userid).get('name');
+                        return ['li', {}, user + ' is now a moderator.'];
+                    }, 
+                    'rem_moderator': function(d) {
+                        var user = remix.room.users.get(d.userid).get('name');
+                        return ['li', {}, user + ' is no longer a moderator.'];                        
+                    }, 
+                    'booted_user': function(d) {
+                        var mod = remix.room.users.get(d.modid).get('name').
+                            user = remix.room.users.get(d.userid).get('name');
+                        return ['li', {}, mod + ' booted ' + user + ' from the room.'];
+                    }, 
+                    'update_room': function(d) {
+                        return ['li', {}, 'Room description changed.'];
+                    }, 
+                    'snagged': function(d) {
+                        var user = remix.room.users.get(d.userid).get('name');
+                        return ['li', {}, user + ' added to playlist.'];
+                    }, 
+                }, 
                 'bottomBar': function () {
                     var buttonClick = function (pane) {
                         return {
@@ -298,14 +476,13 @@
                             ['label', {}, 'Title:'], 
                             ['span##title', {}, '']
                         ], 
-                        ['div.album', {}, 
-                            ['label', {}, 'Album:'], 
-                            ['span##album', {}, '']
-                        ], 
                         ['div.bitrate', {}, 
                             ['label', {}, 'Bitrate:'], 
                             ['span##bitrate', {}, '']
-                        ], [
+                        ], 
+                        ['div.cover##coverart', {}, ''], 
+                        ['div.coverGlow##coverartGlow', {}, ''], 
+                        [
                             'div.stats', {}, [
                                 'div.upvotes##upvotes', {
                                     event: {
@@ -361,7 +538,80 @@
                         ];
                         return menuItems.push(item);
                     });
-                    return ['div.settings-container.pane#settingsPanel', {}, ['div.black-right-header', {}, ['div.header-text', {}, 'Settings']], menuItems];
+                    return ['div.settings-container.pane#settingsPanel', {}, 
+                                ['div.black-right-header', {},['div.header-text', {}, 'Settings']], 
+                                menuItems, 
+                                ['div.options', {}, 
+                                    ['input#autoAwesome.toggle', {
+                                        type: 'range', 
+                                        min: 0, 
+                                        max: 1, 
+                                        value: ((util.getSetting('autoAwesome')=='on')?1:0), 
+                                        event: { 
+                                            click: function () {
+                                                $(this).val((($(this).val()==1)?0:1))
+                                            }, 
+                                            change: function () {
+                                                if ($(this).val()==1) {
+                                                    return util.setSetting('autoAwesome', 'on');
+                                                } 
+                                                return util.setSetting('autoAwesome', 'off');
+                                            }
+                                        }
+                                    }, ''], 
+                                    ['label', {for: 'autoAwesome'}, 'Auto-Awesome']
+                                ],
+                                
+                            ];
+                }, 
+                'guestListName': function(b, f, c) {
+                    var a = "https://s3.amazonaws.com/static.turntable.fm/roommanager_assets/avatars/" + b.avatarid + "/scaled/55/headfront.png";
+                    var e = c ? ".guest.selected" : ".guest";
+                    var d = "";
+                    if (f.isSuperuser(b.userid)) {
+                        d = ".superuser";
+                    } else {
+                        if (f.isMod(b.userid)) {
+                            d = ".mod";
+                        }
+                    }
+                    return ["div" + e, {
+                        event: {
+                            mouseover: function() {
+                                $(this).find("div.guestArrow").show();
+                            },
+                            mouseout: function() {
+                                $(this).find("div.guestArrow").hide();
+                            },
+                            click: function() {
+                                var g = $(this).parent().find("div.guestOptionsContainer");
+                                var h = $(this);
+                                if (!g.length) {
+                                    $.proxy(function() {
+                                        this.addGuestListMenu(b, h);
+                                    }, f)();
+                                } else {
+                                    if ($(this).hasClass("selected")) {
+                                        f.removeGuestListMenu();
+                                    } else {
+                                        f.removeGuestListMenu($.proxy(function() {
+                                            this.addGuestListMenu(b, h);
+                                        }, f));
+                                    }
+                                }
+                            }
+                        },
+                        data: {
+                            id: b.userid
+                        }
+                    }, ["div.guestAvatar",
+                    {}, ["img",
+                    {
+                        src: a,
+                        height: "20"
+                    }]], ["div.guestName" + d,
+                    {},
+                    b.name], ["div.guestArrow"]];
                 }
             }
         });

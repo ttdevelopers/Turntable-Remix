@@ -8,6 +8,4 @@ require(['remix'], function(Remix) {
 	
 	document.body.appendChild(css);
 	
-	//window.remix = new Remix();
-	
 });
