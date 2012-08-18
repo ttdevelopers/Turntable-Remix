@@ -544,7 +544,7 @@
                         ]
                     ];
                 }, 
-                'settingsPanel': function () {
+                'settingsPanel': function (a) {
                     var menuItems;
                     menuItems = ['div.content', {}];
                     $('#menuh > div + div').each(function () {
@@ -558,8 +558,22 @@
                         ];
                         return menuItems.push(item);
                     });
-                    return ['div.settings-container.pane#settingsPanel', {}, 
-                                ['div.black-right-header', {},['div.header-text', {}, 'Settings']], 
+                    return ['div.settings-container.pane'+((a)?'.active':'')+'#settingsPanel', {}, 
+                                ['div.black-right-header', {},['div.header-text', {}, 
+                                    'Settings',
+                                    ['a.refresh', {
+                                        href: '#',
+                                        event: {
+                                            click: function() {
+                                                console.log('refreshing');
+                                                $('#settingsPanel').remove();
+                                                $('#right-panel').
+                                                    append(util.buildTree(remix.room.layouts.settingsPanel(true)));
+                                                return false;
+                                            }
+                                        }
+                                    }, 'Refresh']
+                                ]], 
                                 menuItems, 
                                 ['div.options', {}, 
                                     ['input#autoAwesome.toggle', {

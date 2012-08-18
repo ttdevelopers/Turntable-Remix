@@ -287,6 +287,12 @@ body {
   bottom: 0px;
   width: 300px;
 }
+#right-panel .refresh {
+  color: #fff;
+  position: absolute;
+  right: 10px;
+  text-decoration: none;
+}
 #right-panel .settings-container .btn {
   background: -webkit-linear-gradient(top, rgba(200, 200, 200, 0.1), transparent);
   border: 1px rgba(0, 0, 0, 0.4) solid;
@@ -399,6 +405,7 @@ body {
   font-weight: 100 !important;
   left: 8px !important;
   line-height: 25px;
+  right: 0;
   top: 0;
 }
 .black-right-header .icon {
