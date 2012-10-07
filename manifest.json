@@ -31,12 +31,12 @@
     "js/main.js",
     "js/remix.js",
     "js/require.js",
-  "js/underscore.js",
+	"js/underscore.js",
 	"css/remix.css",
 	"js/underscore.js",
 	"img/dj-icon.png",
 	"img/downvotes-icon.png",
 	"img/fanOf-icon.png",
 	"img/upvotes-icon.png"
-  ],
+  ]
 }
