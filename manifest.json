@@ -1,6 +1,7 @@
 {
   "name": "Turntable.fm Remix",
   "version": "0.2.0",
+  "manifest_version": 2,
   "description": " turntable.fm",
   "content_scripts": [
     {
@@ -24,5 +25,18 @@
     "http://turntable.fm/",
     "https://turntable.fm/",
     "notifications"
-  ]
+  ],
+  "web_accessible_resources": [
+    "js/backbone.js",
+    "js/main.js",
+    "js/remix.js",
+    "js/require.js",
+  "js/underscore.js",
+	"css/remix.css",
+	"js/underscore.js",
+	"img/dj-icon.png",
+	"img/downvotes-icon.png",
+	"img/fanOf-icon.png",
+	"img/upvotes-icon.png"
+  ],
 }
